@@ -46,13 +46,19 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Плавная прокрутка для навигации
+// Плавная прокрутка ТОЛЬКО для якорных ссылок (#)
 document.querySelectorAll('nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        document.querySelector(targetId).scrollIntoView({
-            behavior: 'smooth'
-        });
+        const href = this.getAttribute('href');
+        
+        // Если это якорная ссылка (начинается с #)
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            document.querySelector(href).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+        // Если это ссылка на другую страницу (event.html) - ничего не делаем,
+        // браузер обработает её сам
     });
 });
