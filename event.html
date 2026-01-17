@@ -3,79 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event: Titles Survive</title>
+    <title>Event: Titles Survive - Планировщик</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <style>
-        /* Специальные стили для страницы события */
+        /* Основные стили события */
         .event-hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 5rem 2rem;
+            padding: 3rem 2rem;
             text-align: center;
-            border-radius: 0 0 40px 40px;
-            margin-bottom: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .event-hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
-            background-size: cover;
-        }
-        
-        .event-tag {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 8px 20px;
-            border-radius: 25px;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin: 3rem 0;
-            flex-wrap: wrap;
-        }
-        
-        .countdown-item {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            min-width: 100px;
-            border: 1px solid rgba(255,255,255,0.3);
-            transition: transform 0.3s;
-        }
-        
-        .countdown-item:hover {
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.25);
-        }
-        
-        .countdown-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            display: block;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        
-        .countdown-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            letter-spacing: 1px;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 2rem;
         }
         
         .event-container {
@@ -84,144 +23,225 @@
             padding: 0 20px;
         }
         
-        .info-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin: 3rem 0;
-        }
-        
-        .info-card {
+        /* Стили для планировщика */
+        .scheduler-container {
             background: white;
-            padding: 2rem;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
-            border: 1px solid #f0f0f0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin: 2rem 0;
         }
         
-        .info-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
-        }
-        
-        .info-card h3 {
-            color: #667eea;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .speakers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin: 3rem 0;
-        }
-        
-        .speaker-card {
+        .current-time {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
             text-align: center;
-            padding: 2rem;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            transition: all 0.3s;
         }
         
-        .speaker-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        .time-display {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
         }
         
-        .speaker-avatar {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            margin: 0 auto 1.5rem;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
+        .date-display {
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .current-event {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .next-event {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .event-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .event-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .event-time {
+            font-size: 1.3rem;
             font-weight: bold;
         }
         
-        .schedule-timeline {
-            position: relative;
-            margin: 3rem 0;
-            padding-left: 30px;
+        .day-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+            justify-content: center;
         }
         
-        .schedule-timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(to bottom, #667eea, #764ba2);
-            border-radius: 3px;
+        .day-btn {
+            padding: 12px 25px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            min-width: 60px;
+            text-align: center;
         }
         
-        .timeline-item {
-            position: relative;
-            margin-bottom: 2.5rem;
-            padding-left: 30px;
+        .day-btn:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
         }
         
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -36px;
-            top: 5px;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
+        .day-btn.active {
             background: #667eea;
-            border: 3px solid white;
-            box-shadow: 0 0 0 3px #667eea;
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
         
-        .timeline-time {
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .schedule-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .schedule-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s;
+        }
+        
+        .schedule-table tr:hover td {
+            background: #f8f9fa;
+        }
+        
+        .time-slot {
             font-weight: bold;
             color: #667eea;
-            font-size: 1.1rem;
-            display: block;
-            margin-bottom: 5px;
+            background: #f8f9fa !important;
         }
         
-        .register-btn {
-            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            border: none;
-            padding: 18px 50px;
-            font-size: 1.3rem;
-            border-radius: 50px;
-            cursor: pointer;
-            display: block;
-            margin: 3rem auto;
-            transition: all 0.3s;
+        .current-slot {
+            background: rgba(67, 233, 123, 0.2) !important;
+            border-left: 4px solid #43e97b;
             font-weight: bold;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
         }
         
-        .register-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(245, 87, 108, 0.4);
+        .next-slot {
+            background: rgba(79, 172, 254, 0.1) !important;
+            border-left: 4px solid #4facfe;
         }
         
-        .register-btn:disabled {
-            background: #43e97b;
-            transform: none;
-            cursor: not-allowed;
+        .countdown-timer {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+            padding: 10px 20px;
+            background: white;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 10px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .event-type {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 2px;
+        }
+        
+        .type-hero { background: #ffeaa7; color: #2d3436; }
+        .type-settlement { background: #a29bfe; color: white; }
+        .type-troops { background: #fd79a8; color: white; }
+        .type-tech { background: #55efc4; color: #2d3436; }
+        .type-equipment { background: #74b9ff; color: white; }
+        
+        @media (max-width: 768px) {
+            .current-event, .next-event {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .schedule-table {
+                font-size: 0.9rem;
+            }
+            
+            .schedule-table th,
+            .schedule-table td {
+                padding: 0.7rem 0.5rem;
+            }
+            
+            .day-btn {
+                padding: 10px 15px;
+                min-width: 50px;
+            }
         }
         
         .back-home {
             text-align: center;
-            margin-top: 4rem;
+            margin-top: 3rem;
             padding-top: 2rem;
             border-top: 1px solid #eee;
         }
@@ -244,330 +264,352 @@
             color: white;
             transform: translateX(-5px);
         }
-        
-        @media (max-width: 768px) {
-            .event-hero {
-                padding: 3rem 1rem;
-            }
-            
-            .countdown {
-                gap: 15px;
-            }
-            
-            .countdown-item {
-                min-width: 80px;
-                padding: 15px;
-            }
-            
-            .countdown-number {
-                font-size: 2rem;
-            }
-        }
     </style>
 </head>
 <body>
     <!-- Герой-секция -->
     <div class="event-hero">
-        <div style="position: relative; z-index: 1;">
-            <span class="event-tag">🎯 ЭКСКЛЮЗИВНОЕ МЕРОПРИЯТИЕ</span>
-            <h1 style="font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">
-                TITLES SURVIVE
-            </h1>
-            <p style="font-size: 1.4rem; max-width: 800px; margin: 0 auto 2rem; opacity: 0.95;">
-                Мастерство создания заголовков, которые цепляют, продают и запоминаются
-            </p>
-            
-            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; display: inline-block; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
-                <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap; justify-content: center;">
-                    <span style="font-size: 1.2rem;">📅 <strong>25 ЯНВАРЯ 2024</strong></span>
-                    <span style="opacity: 0.8;">•</span>
-                    <span style="font-size: 1.2rem;">🕒 <strong>19:00 МСК</strong></span>
-                    <span style="opacity: 0.8;">•</span>
-                    <span style="font-size: 1.2rem;">💻 <strong>ОНЛАЙН</strong></span>
-                    <span style="opacity: 0.8;">•</span>
-                    <span style="font-size: 1.2rem;">🎟️ <strong>БЕСПЛАТНО</strong></span>
-                </div>
-            </div>
-            
-            <div class="countdown" id="countdown">
-                <div class="countdown-item">
-                    <span class="countdown-number" id="days">00</span>
-                    <span class="countdown-label">ДНЕЙ</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="hours">00</span>
-                    <span class="countdown-label">ЧАСОВ</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="minutes">00</span>
-                    <span class="countdown-label">МИНУТ</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="seconds">00</span>
-                    <span class="countdown-label">СЕКУНД</span>
-                </div>
-            </div>
-        </div>
+        <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">🎮 ПЛАНИРОВЩИК СОБЫТИЙ</h1>
+        <p style="font-size: 1.2rem; opacity: 0.9;">Оптимальное расписание на 7 дней</p>
     </div>
 
     <!-- Основной контент -->
     <main class="event-container">
-        <!-- О мероприятии -->
-        <section>
-            <h2 style="text-align: center; margin-bottom: 1rem; color: #333;">✨ ЧТО ВАС ЖДЁТ</h2>
-            <p style="text-align: center; max-width: 800px; margin: 0 auto 3rem; font-size: 1.1rem; color: #666;">
-                Интенсивный практикум, где мы разберём психологию, технику и магию создания заголовков, 
-                которые работают в 2024 году
-            </p>
-            
-            <div class="info-cards">
-                <div class="info-card">
-                    <h3>🎯 <span>Практические формулы</span></h3>
-                    <p>10 готовых шаблонов заголовков, которые можно использовать сразу после мероприятия. Каждый шаблон разбираем на реальных примерах.</p>
-                </div>
-                
-                <div class="info-card">
-                    <h3>🧠 <span>Психология влияния</span></h3>
-                    <p>Как работают триггеры внимания, почему одни заголовки цепляют, а другие игнорируются. Нейромаркетинг для текстов.</p>
-                </div>
-                
-                <div class="info-card">
-                    <h3>📈 <span>SEO-оптимизация</span></h3>
-                    <p>Как совместить продающую силу и поисковую оптимизацию. Заголовки для Google и для людей — находим баланс.</p>
-                </div>
-                
-                <div class="info-card">
-                    <h3>🎭 <span>А/B тестирование</span></h3>
-                    <p>Методы быстрого тестирования заголовков. Инструменты и метрики для определения эффективности.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Спикеры -->
-        <section>
-            <h2 style="text-align: center; margin: 4rem 0 2rem; color: #333;">👥 ВАШИ ЭКСПЕРТЫ</h2>
-            
-            <div class="speakers-grid">
-                <div class="speaker-card">
-                    <div class="speaker-avatar">АИ</div>
-                    <h3 style="color: #333; margin-bottom: 0.5rem;">Алексей Иванов</h3>
-                    <p style="color: #667eea; font-weight: bold; margin-bottom: 0.5rem;">Главный редактор MediaLab</p>
-                    <p style="color: #666; font-size: 0.9rem;">15 лет создаёт контент для Fortune 500 компаний. Автор бестселлера "Текст, который продаёт"</p>
-                </div>
-                
-                <div class="speaker-card">
-                    <div class="speaker-avatar">МС</div>
-                    <h3 style="color: #333; margin-bottom: 0.5rem;">Мария Смирнова</h3>
-                    <p style="color: #667eea; font-weight: bold; margin-bottom: 0.5rem;">SEO-директор DigitalGroup</p>
-                    <p style="color: #666; font-size: 0.9rem;">Помогла 200+ проектам попасть в ТОП поиска. Эксперт по техническому SEO и контент-стратегиям</p>
-                </div>
-                
-                <div class="speaker-card">
-                    <div class="speaker-avatar">ДП</div>
-                    <h3 style="color: #333; margin-bottom: 0.5rem;">Дмитрий Петров</h3>
-                    <p style="color: #667eea; font-weight: bold; margin-bottom: 0.5rem;">Креативный директор AdGenius</p>
-                    <p style="color: #666; font-size: 0.9rem;">Создатель вирусных рекламных кампаний. Его работы собирали миллионы просмотров и тысячи лидов</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Расписание -->
-        <section>
-            <h2 style="text-align: center; margin: 4rem 0 2rem; color: #333;">🕒 ПРОГРАММА МЕРОПРИЯТИЯ</h2>
-            
-            <div class="schedule-timeline">
-                <div class="timeline-item">
-                    <span class="timeline-time">19:00 – 19:45</span>
-                    <h3 style="margin: 5px 0; color: #333;">Открытие. Заголовок — это 80% успеха</h3>
-                    <p style="color: #666;">Почему пользователи решают за 3 секунды, читать ваш контент или нет. Статистика и исследования.</p>
-                </div>
-                
-                <div class="timeline-item">
-                    <span class="timeline-time">19:45 – 20:30</span>
-                    <h3 style="margin: 5px 0; color: #333;">10 формул, которые работают всегда</h3>
-                    <p style="color: #666;">Разбор каждой формулы с примерами из реальных кейсов. Как адаптировать под свою нишу.</p>
-                </div>
-                
-                <div class="timeline-item">
-                    <span class="timeline-time">20:30 – 21:15</span>
-                    <h3 style="margin: 5px 0; color: #333;">SEO vs Продажи: как совместить?</h3>
-                    <p style="color: #666;">Технические аспекты заголовков для поисковиков. Keyword research и LSI-фразы.</p>
-                </div>
-                
-                <div class="timeline-item">
-                    <span class="timeline-time">21:15 – 22:00</span>
-                    <h3 style="margin: 5px 0; color: #333;">Практикум: создаём вместе</h3>
-                    <p style="color: #666;">Работа в мини-группах с экспертами. Разбор ваших заголовков. Ответы на вопросы.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Регистрация -->
-        <section style="text-align: center;">
-            <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 3rem; border-radius: 25px; margin: 3rem 0;">
-                <h2 style="color: #333; margin-bottom: 1rem;">🎟️ РЕГИСТРАЦИЯ</h2>
-                <p style="font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto 2rem;">
-                    Зарегистрируйтесь сейчас и получите:
-                </p>
-                
-                <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 2rem;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 2.5rem; margin-bottom: 10px;">📚</div>
-                        <p style="font-weight: bold;">Презентацию</p>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🎁</div>
-                        <p style="font-weight: bold;">Чек-листы</p>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🎥</div>
-                        <p style="font-weight: bold;">Запись</p>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 2.5rem; margin-bottom: 10px;">💬</div>
-                        <p style="font-weight: bold;">Чат с экспертами</p>
-                    </div>
-                </div>
-                
-                <button class="register-btn" id="registerBtn">
-                    ЗАРЕГИСТРИРОВАТЬСЯ БЕСПЛАТНО
-                </button>
-                <p id="registrationMessage" style="margin-top: 1.5rem; min-height: 30px;"></p>
-            </div>
-        </section>
-    </main>
-
-    <!-- Футер -->
-    <footer style="background: #2d3436; color: white; padding: 3rem 0; margin-top: 4rem;">
-        <div class="event-container">
-            <div style="text-align: center;">
-                <h3 style="color: white; margin-bottom: 1rem;">TITLES SURVIVE</h3>
-                <p style="opacity: 0.8; max-width: 600px; margin: 0 auto 2rem;">
-                    Онлайн-воркшоп по созданию заголовков, которые привлекают внимание, 
-                    вызывают интерес и приводят клиентов
-                </p>
-                
-                <div class="back-home">
-                    <a href="index.html">
-                        <span>←</span> Вернуться на главную
-                    </a>
-                </div>
-                
-                <p style="margin-top: 2rem; opacity: 0.6; font-size: 0.9rem;">
-                    © 2024 Titles Survive Event. Все права защищены.
-                </p>
+        <!-- Текущее время и дата -->
+        <div class="current-time">
+            <div class="time-display" id="realTime">Загрузка времени...</div>
+            <div class="date-display">
+                <span id="currentDate">Дата: --.--.----</span> • 
+                <span id="dayOfWeek">День недели: ----</span>
             </div>
         </div>
-    </footer>
+
+        <!-- Текущее и следующее событие -->
+        <div class="current-event">
+            <div>
+                <div class="event-label">🟢 СЕЙЧАС</div>
+                <div class="event-name" id="currentEventName">Загрузка...</div>
+            </div>
+            <div>
+                <div class="event-label">🕐 ДО</div>
+                <div class="event-time">
+                    <span id="timeUntil">--:--</span>
+                    <div class="countdown-timer" id="countdownTimer">--:--:--</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="next-event">
+            <div>
+                <div class="event-label">⏭️ ДАЛЕЕ</div>
+                <div class="event-name" id="nextEventName">Загрузка...</div>
+            </div>
+            <div>
+                <div class="event-label">🕐 НАЧИНАЕТСЯ В</div>
+                <div class="event-time" id="nextEventTime">--:--</div>
+            </div>
+        </div>
+
+        <!-- Легенда -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ffeaa7;"></div>
+                <span>Улучшение героя</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #a29bfe;"></div>
+                <span>Строительство поселения</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #fd79a8;"></div>
+                <span>Улучшение войск</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #55efc4;"></div>
+                <span>Исследование технологий</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #74b9ff;"></div>
+                <span>Усиление снаряжения</span>
+            </div>
+        </div>
+
+        <!-- Выбор дня -->
+        <div style="text-align: center; margin: 2rem 0;">
+            <h3 style="margin-bottom: 1rem; color: #333;">Выбери день:</h3>
+            <div class="day-selector" id="daySelector">
+                <!-- Дни будут добавлены через JavaScript -->
+            </div>
+        </div>
+
+        <!-- Таблица расписания -->
+        <div class="scheduler-container">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #333;">📅 РАСПИСАНИЕ НА ДЕНЬ <span id="selectedDay">1</span></h2>
+            
+            <div style="overflow-x: auto;">
+                <table class="schedule-table" id="scheduleTable">
+                    <thead>
+                        <tr>
+                            <th>Время</th>
+                            <th>03:00</th>
+                            <th>07:00</th>
+                            <th>11:00</th>
+                            <th>15:00</th>
+                            <th>19:00</th>
+                            <th>23:00</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleBody">
+                        <!-- Данные будут добавлены через JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Описание событий -->
+        <div style="background: #f8f9fa; padding: 2rem; border-radius: 15px; margin: 2rem 0;">
+            <h3 style="color: #333; margin-bottom: 1rem;">📝 Описание событий:</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div>
+                    <span class="event-type type-hero">Улучшение героя</span>
+                    <p style="margin-top: 10px; color: #666;">Прокачка характеристик героя, получение новых способностей и талантов.</p>
+                </div>
+                <div>
+                    <span class="event-type type-settlement">Строительство поселения</span>
+                    <p style="margin-top: 10px; color: #666;">Развитие инфраструктуры, постройка зданий и улучшение экономики.</p>
+                </div>
+                <div>
+                    <span class="event-type type-troops">Улучшение войск</span>
+                    <p style="margin-top: 10px; color: #666;">Тренировка солдат, исследование тактик и усиление армии.</p>
+                </div>
+                <div>
+                    <span class="event-type type-tech">Исследование технологий</span>
+                    <p style="margin-top: 10px; color: #666;">Научные открытия, улучшение производства и развитие технологий.</p>
+                </div>
+                <div>
+                    <span class="event-type type-equipment">Усиление снаряжения</span>
+                    <p style="margin-top: 10px; color: #666;">Крафт и улучшение оружия, брони и снаряжения.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопка возврата -->
+        <div class="back-home">
+            <a href="index.html">
+                <span>←</span> Вернуться на главную
+            </a>
+        </div>
+    </main>
 
     <!-- JavaScript -->
     <script>
-        // Таймер обратного отсчета
-        function updateCountdown() {
-            const eventDate = new Date('January 25, 2024 19:00:00').getTime();
-            const now = new Date().getTime();
-            const distance = eventDate - now;
+        // Данные расписания
+        const scheduleData = {
+            1: ["Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя"],
+            2: ["Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения"],
+            3: ["Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения", "Улучшение войск"],
+            4: ["Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий"],
+            5: ["Усиление снаряжения", "Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения"],
+            6: ["Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя"],
+            7: ["Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения"]
+        };
+
+        // Временные слоты
+        const timeSlots = ["03:00", "07:00", "11:00", "15:00", "19:00", "23:00"];
+        
+        // Классы для типов событий
+        const eventClasses = {
+            "Улучшение героя": "type-hero",
+            "Строительство поселения": "type-settlement",
+            "Улучшение войск": "type-troops",
+            "Исследование технологий": "type-tech",
+            "Усиление снаряжения": "type-equipment"
+        };
+
+        // Текущий выбранный день
+        let currentDay = 1;
+        
+        // Функция для обновления времени
+        function updateDateTime() {
+            const now = new Date();
             
-            if (distance > 0) {
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // Форматируем дату и время
+            const dateStr = now.toLocaleDateString('ru-RU', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+            
+            const timeStr = now.toLocaleTimeString('ru-RU', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            
+            const dayOfWeek = now.toLocaleDateString('ru-RU', { weekday: 'long' });
+            const dayOfWeekCapitalized = dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1);
+            
+            // Обновляем отображение
+            document.getElementById('realTime').textContent = `Реальное время по МСК: ${dateStr} ${timeStr}`;
+            document.getElementById('currentDate').textContent = `Дата: ${dateStr}`;
+            document.getElementById('dayOfWeek').textContent = `День недели: ${dayOfWeekCapitalized}`;
+            
+            // Определяем текущий временной слот
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            
+            let currentSlotIndex = -1;
+            let nextSlotIndex = -1;
+            
+            // Находим текущий и следующий слот
+            for (let i = 0; i < timeSlots.length; i++) {
+                const slotHour = parseInt(timeSlots[i].split(':')[0]);
                 
-                document.getElementById('days').textContent = days.toString().padStart(2, '0');
-                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-            } else {
-                document.getElementById('countdown').innerHTML = `
-                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; backdrop-filter: blur(10px);">
-                        <h3 style="margin: 0; font-size: 2rem;">🎉 МЕРОПРИЯТИЕ НАЧАЛОСЬ!</h3>
-                        <p style="margin: 10px 0 0; opacity: 0.9;">Присоединяйтесь к трансляции</p>
-                    </div>
-                `;
+                if (currentHour < slotHour || (currentHour === slotHour && currentMinute < 0)) {
+                    nextSlotIndex = i;
+                    break;
+                } else if (i === timeSlots.length - 1) {
+                    // Если текущее время после последнего слота, следующий слот - первый слот следующего дня
+                    nextSlotIndex = 0;
+                }
             }
+            
+            // Текущий слот - предыдущий от следующего
+            currentSlotIndex = (nextSlotIndex - 1 + timeSlots.length) % timeSlots.length;
+            
+            // Получаем события
+            const currentEvent = scheduleData[currentDay][currentSlotIndex];
+            const nextEvent = scheduleData[currentDay][nextSlotIndex];
+            
+            // Время до следующего события
+            let nextSlotTime = timeSlots[nextSlotIndex];
+            let nextTime = new Date();
+            nextTime.setHours(parseInt(nextSlotTime.split(':')[0]));
+            nextTime.setMinutes(0);
+            nextTime.setSeconds(0);
+            nextTime.setMilliseconds(0);
+            
+            // Если следующий слот на следующий день
+            if (nextSlotIndex === 0 && currentSlotIndex === timeSlots.length - 1) {
+                nextTime.setDate(nextTime.getDate() + 1);
+            }
+            
+            const timeDiff = nextTime - now;
+            const hoursLeft = Math.floor(timeDiff / (1000 * 60 * 60));
+            const minutesLeft = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsLeft = Math.floor((timeDiff % (1000 * 60)) / 1000);
+            
+            // Обновляем информацию о событиях
+            document.getElementById('currentEventName').textContent = currentEvent;
+            document.getElementById('nextEventName').textContent = nextEvent;
+            document.getElementById('nextEventTime').textContent = timeSlots[nextSlotIndex];
+            document.getElementById('timeUntil').textContent = timeSlots[nextSlotIndex];
+            
+            // Обновляем таймер
+            document.getElementById('countdownTimer').textContent = 
+                `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
+            
+            // Обновляем таблицу
+            updateScheduleTable(currentSlotIndex, nextSlotIndex);
+            
+            // Обновляем выбор дня
+            updateDaySelector();
         }
         
-        // Запускаем таймер
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+        // Функция обновления таблицы расписания
+        function updateScheduleTable(currentSlotIndex, nextSlotIndex) {
+            const scheduleBody = document.getElementById('scheduleBody');
+            const daySchedule = scheduleData[currentDay];
+            
+            // Очищаем таблицу
+            scheduleBody.innerHTML = '';
+            
+            // Создаем строку с событиями
+            const row = document.createElement('tr');
+            
+            // Добавляем ячейку времени
+            const timeCell = document.createElement('td');
+            timeCell.className = 'time-slot';
+            timeCell.textContent = 'Событие';
+            row.appendChild(timeCell);
+            
+            // Добавляем ячейки с событиями
+            for (let i = 0; i < daySchedule.length; i++) {
+                const cell = document.createElement('td');
+                const eventType = daySchedule[i];
+                
+                // Добавляем класс типа события
+                const eventSpan = document.createElement('span');
+                eventSpan.className = `event-type ${eventClasses[eventType]}`;
+                eventSpan.textContent = eventType;
+                cell.appendChild(eventSpan);
+                
+                // Выделяем текущий и следующий слоты
+                if (i === currentSlotIndex) {
+                    cell.className = 'current-slot';
+                } else if (i === nextSlotIndex) {
+                    cell.className = 'next-slot';
+                }
+                
+                row.appendChild(cell);
+            }
+            
+            scheduleBody.appendChild(row);
+        }
         
-        // Регистрация
-        document.getElementById('registerBtn').addEventListener('click', function() {
-            const btn = this;
-            const message = document.getElementById('registrationMessage');
+        // Функция обновления выбора дня
+        function updateDaySelector() {
+            const daySelector = document.getElementById('daySelector');
+            daySelector.innerHTML = '';
             
-            // Анимация кнопки
-            btn.innerHTML = '✅ РЕГИСТРАЦИЯ УСПЕШНА!';
-            btn.style.background = 'linear-gradient(45deg, #43e97b 0%, #38f9d7 100%)';
-            btn.disabled = true;
+            for (let day = 1; day <= 7; day++) {
+                const button = document.createElement('button');
+                button.className = `day-btn ${day === currentDay ? 'active' : ''}`;
+                button.textContent = day;
+                button.onclick = () => selectDay(day);
+                daySelector.appendChild(button);
+            }
             
-            // Сообщение
-            message.innerHTML = `
-                <div style="background: rgba(67, 233, 123, 0.1); padding: 15px; border-radius: 10px; border: 2px solid #43e97b;">
-                    <strong style="color: #43e97b;">✅ Спасибо за регистрацию!</strong><br>
-                    Ссылка на Zoom-конференцию будет отправлена на ваш email за 1 час до начала мероприятия.<br>
-                    <small style="opacity: 0.8;">Проверьте папку "Спам", если не найдёте письмо.</small>
-                </div>
-            `;
+            document.getElementById('selectedDay').textContent = currentDay;
+        }
+        
+        // Функция выбора дня
+        function selectDay(day) {
+            currentDay = day;
+            updateDateTime(); // Обновит все данные для выбранного дня
+        }
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            // Создаем кнопки выбора дня
+            updateDaySelector();
             
-            // Эффект конфетти
-            createConfetti();
+            // Обновляем время сразу
+            updateDateTime();
             
-            // Сохраняем в localStorage
-            localStorage.setItem('titlesSurviveRegistered', 'true');
+            // Обновляем время каждую секунду
+            setInterval(updateDateTime, 1000);
         });
         
-        // Проверяем, уже регистрировался ли пользователь
-        if (localStorage.getItem('titlesSurviveRegistered') === 'true') {
-            document.getElementById('registerBtn').innerHTML = '✅ ВЫ УЖЕ ЗАРЕГИСТРИРОВАНЫ';
-            document.getElementById('registerBtn').style.background = 'linear-gradient(45deg, #43e97b 0%, #38f9d7 100%)';
-            document.getElementById('registerBtn').disabled = true;
-            document.getElementById('registrationMessage').innerHTML = `
-                <div style="color: #43e97b; font-weight: bold;">
-                    Вы уже зарегистрированы на это мероприятие
-                </div>
-            `;
+        // Функция для формата времени
+        function formatTime(date) {
+            return date.toLocaleTimeString('ru-RU', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
         }
         
-        // Функция создания конфетти
-        function createConfetti() {
-            const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#43e97b', '#38f9d7'];
-            const emojis = ['🎯', '✨', '🚀', '🎉', '🔥', '💫', '🌟', '🎊'];
-            
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                confetti.style.position = 'fixed';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = '-50px';
-                confetti.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                confetti.style.zIndex = '9999';
-                confetti.style.opacity = '0.9';
-                confetti.style.animation = `confettiFall ${Math.random() * 2 + 2}s linear forwards`;
-                confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
-                document.body.appendChild(confetti);
-                
-                setTimeout(() => confetti.remove(), 4000);
-            }
+        // Функция для формата даты
+        function formatDate(date) {
+            return date.toLocaleDateString('ru-RU', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
         }
-        
-        // Добавляем стили для анимации конфетти
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes confettiFall {
-                0% {
-                    transform: translateY(0) rotate(0deg);
-                    opacity: 1;
-                }
-                100% {
-                    transform: translateY(100vh) rotate(720deg);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
-EOF
