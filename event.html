@@ -1,4 +1,4 @@
-# Создаем новую страницу event.html
+# Создаем полноценную страницу мероприятия
 cat > event.html << 'EOF'
 <!DOCTYPE html>
 <html lang="ru">
@@ -9,234 +9,460 @@ cat > event.html << 'EOF'
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <style>
-        .event-header {
+        /* Специальные стили для страницы события */
+        .event-hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 4rem 2rem;
+            padding: 5rem 2rem;
             text-align: center;
-            border-radius: 0 0 30px 30px;
+            border-radius: 0 0 40px 40px;
             margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .event-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
         }
         
         .event-tag {
             display: inline-block;
             background: rgba(255,255,255,0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
-            margin-bottom: 1rem;
+            padding: 8px 20px;
+            border-radius: 25px;
+            margin-bottom: 1.5rem;
             font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
         }
         
         .countdown {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin: 2rem 0;
+            gap: 25px;
+            margin: 3rem 0;
+            flex-wrap: wrap;
         }
         
         .countdown-item {
-            background: white;
-            color: #333;
-            padding: 15px;
-            border-radius: 10px;
-            min-width: 80px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 100px;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: transform 0.3s;
+        }
+        
+        .countdown-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.25);
         }
         
         .countdown-number {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: bold;
             display: block;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         
         .countdown-label {
-            font-size: 0.8rem;
-            color: #666;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            letter-spacing: 1px;
         }
         
-        .schedule {
-            background: #f8f9fa;
-            border-radius: 15px;
+        .event-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 3rem 0;
+        }
+        
+        .info-card {
+            background: white;
             padding: 2rem;
-            margin: 2rem 0;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+            border: 1px solid #f0f0f0;
         }
         
-        .schedule-item {
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .info-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid #ddd;
+            gap: 10px;
         }
         
-        .schedule-time {
+        .speakers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 3rem 0;
+        }
+        
+        .speaker-card {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        
+        .speaker-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .speaker-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .schedule-timeline {
+            position: relative;
+            margin: 3rem 0;
+            padding-left: 30px;
+        }
+        
+        .schedule-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            border-radius: 3px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+            padding-left: 30px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #667eea;
+        }
+        
+        .timeline-time {
             font-weight: bold;
             color: #667eea;
-            min-width: 100px;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 5px;
         }
         
         .register-btn {
             background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 1.2rem;
+            padding: 18px 50px;
+            font-size: 1.3rem;
             border-radius: 50px;
             cursor: pointer;
             display: block;
-            margin: 2rem auto;
-            transition: transform 0.3s;
+            margin: 3rem auto;
+            transition: all 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
         }
         
         .register-btn:hover {
             transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(245, 87, 108, 0.4);
         }
         
-        .speaker {
+        .register-btn:disabled {
+            background: #43e97b;
+            transform: none;
+            cursor: not-allowed;
+        }
+        
+        .back-home {
             text-align: center;
-            padding: 1.5rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
         }
         
-        .speaker-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 1rem;
-            border: 5px solid #667eea;
+        .back-home a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 25px;
+            border-radius: 25px;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+        
+        .back-home a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(-5px);
+        }
+        
+        @media (max-width: 768px) {
+            .event-hero {
+                padding: 3rem 1rem;
+            }
+            
+            .countdown {
+                gap: 15px;
+            }
+            
+            .countdown-item {
+                min-width: 80px;
+                padding: 15px;
+            }
+            
+            .countdown-number {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="event-header">
-        <span class="event-tag">🎯 ОНЛАЙН-МЕРОПРИЯТИЕ</span>
-        <h1 style="font-size: 3rem;">EVENT: TITLES SURVIVE</h1>
-        <p style="font-size: 1.2rem; max-width: 800px; margin: 1rem auto;">
-            Как создавать заголовки, которые привлекают внимание, цепляют и остаются в памяти
-        </p>
-        
-        <div class="countdown" id="countdown">
-            <div class="countdown-item">
-                <span class="countdown-number" id="days">00</span>
-                <span class="countdown-label">Дней</span>
+    <!-- Герой-секция -->
+    <div class="event-hero">
+        <div style="position: relative; z-index: 1;">
+            <span class="event-tag">🎯 ЭКСКЛЮЗИВНОЕ МЕРОПРИЯТИЕ</span>
+            <h1 style="font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+                TITLES SURVIVE
+            </h1>
+            <p style="font-size: 1.4rem; max-width: 800px; margin: 0 auto 2rem; opacity: 0.95;">
+                Мастерство создания заголовков, которые цепляют, продают и запоминаются
+            </p>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; display: inline-block; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
+                <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                    <span style="font-size: 1.2rem;">📅 <strong>25 ЯНВАРЯ 2024</strong></span>
+                    <span style="opacity: 0.8;">•</span>
+                    <span style="font-size: 1.2rem;">🕒 <strong>19:00 МСК</strong></span>
+                    <span style="opacity: 0.8;">•</span>
+                    <span style="font-size: 1.2rem;">💻 <strong>ОНЛАЙН</strong></span>
+                    <span style="opacity: 0.8;">•</span>
+                    <span style="font-size: 1.2rem;">🎟️ <strong>БЕСПЛАТНО</strong></span>
+                </div>
             </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="hours">00</span>
-                <span class="countdown-label">Часов</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="minutes">00</span>
-                <span class="countdown-label">Минут</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="seconds">00</span>
-                <span class="countdown-label">Секунд</span>
+            
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">ДНЕЙ</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">ЧАСОВ</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">МИНУТ</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">СЕКУНД</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <main style="max-width: 1000px; margin: 0 auto; padding: 0 20px;">
+    <!-- Основной контент -->
+    <main class="event-container">
+        <!-- О мероприятии -->
         <section>
-            <h2>📅 О событии</h2>
-            <p><strong>Titles Survive</strong> — это интенсивный воркшоп по созданию эффективных заголовков для контента, рекламы и социальных сетей.</p>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 2rem 0;">
-                <div style="background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.08);">
-                    <h3>🎯 Что вы узнаете</h3>
-                    <ul>
-                        <li>Психология привлекательных заголовков</li>
-                        <li>10 формул заголовков, которые работают</li>
-                        <li>Как тестировать заголовки</li>
-                        <li>SEO-оптимизация заголовков</li>
-                    </ul>
-                </div>
-                
-                <div style="background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.08);">
-                    <h3>📊 Для кого</h3>
-                    <ul>
-                        <li>Копирайтеры и маркетологи</li>
-                        <li>Блогеры и контент-мейкеры</li>
-                        <li>Владельцы бизнеса</li>
-                        <li>Все, кто работает с текстом</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>👥 Спикеры</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
-                <div class="speaker">
-                    <div class="speaker-img" style="background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);"></div>
-                    <h3>Алексей Иванов</h3>
-                    <p>Главный редактор MediaLab</p>
-                    <small>15 лет в копирайтинге</small>
-                </div>
-                
-                <div class="speaker">
-                    <div class="speaker-img" style="background: linear-gradient(45deg, #43e97b 0%, #38f9d7 100%);"></div>
-                    <h3>Мария Смирнова</h3>
-                    <p>SEO-эксперт</p>
-                    <small>Специалист по поисковым системам</small>
-                </div>
-                
-                <div class="speaker">
-                    <div class="speaker-img" style="background: linear-gradient(45deg, #fa709a 0%, #fee140 100%);"></div>
-                    <h3>Дмитрий Петров</h3>
-                    <p>Креативный директор</p>
-                    <small>Эксперт по вирусному контенту</small>
-                </div>
-            </div>
-        </section>
-
-        <section class="schedule">
-            <h2>🕒 Расписание</h2>
-            <div class="schedule-item">
-                <div class="schedule-time">19:00</div>
-                <div>
-                    <strong>Открытие. Почему заголовки решают все</strong>
-                    <p>Алексей Иванов</p>
-                </div>
-            </div>
-            <div class="schedule-item">
-                <div class="schedule-time">19:45</div>
-                <div>
-                    <strong>Формулы успешных заголовков</strong>
-                    <p>Разбор 10 работающих шаблонов</p>
-                </div>
-            </div>
-            <div class="schedule-item">
-                <div class="schedule-time">20:30</div>
-                <div>
-                    <strong>SEO для заголовков</strong>
-                    <p>Мария Смирнова</p>
-                </div>
-            </div>
-            <div class="schedule-item" style="border-bottom: none;">
-                <div class="schedule-time">21:15</div>
-                <div>
-                    <strong>Практика: создаем свои заголовки</strong>
-                    <p>Воркшоп с экспертами</p>
-                </div>
-            </div>
-        </section>
-
-        <section style="text-align: center;">
-            <h2>🎟️ Участие</h2>
-            <p style="font-size: 1.5rem; margin: 1rem 0;">
-                <strong>Бесплатно</strong> • Онлайн • 25 января 2024
+            <h2 style="text-align: center; margin-bottom: 1rem; color: #333;">✨ ЧТО ВАС ЖДЁТ</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 3rem; font-size: 1.1rem; color: #666;">
+                Интенсивный практикум, где мы разберём психологию, технику и магию создания заголовков, 
+                которые работают в 2024 году
             </p>
-            <button class="register-btn" id="registerBtn">ЗАРЕГИСТРИРОВАТЬСЯ</button>
-            <p id="registrationMessage" style="margin-top: 1rem;"></p>
+            
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>🎯 <span>Практические формулы</span></h3>
+                    <p>10 готовых шаблонов заголовков, которые можно использовать сразу после мероприятия. Каждый шаблон разбираем на реальных примерах.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🧠 <span>Психология влияния</span></h3>
+                    <p>Как работают триггеры внимания, почему одни заголовки цепляют, а другие игнорируются. Нейромаркетинг для текстов.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>📈 <span>SEO-оптимизация</span></h3>
+                    <p>Как совместить продающую силу и поисковую оптимизацию. Заголовки для Google и для людей — находим баланс.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🎭 <span>А/B тестирование</span></h3>
+                    <p>Методы быстрого тестирования заголовков. Инструменты и метрики для определения эффективности.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Спикеры -->
+        <section>
+            <h2 style="text-align: center; margin: 4rem 0 2rem; color: #333;">👥 ВАШИ ЭКСПЕРТЫ</h2>
+            
+            <div class="speakers-grid">
+                <div class="speaker-card">
+                    <div class="speaker-avatar">АИ</div>
+                    <h3 style="color: #333; margin-bottom: 0.5rem;">Алексей Иванов</h3>
+                    <p style="color: #667eea; font-weight: bold; margin-bottom: 0.5rem;">Главный редактор MediaLab</p>
+                    <p style="color: #666; font-size: 0.9rem;">15 лет создаёт контент для Fortune 500 компаний. Автор бестселлера "Текст, который продаёт"</p>
+                </div>
+                
+                <div class="speaker-card">
+                    <div class="speaker-avatar">МС</div>
+                    <h3 style="color: #333; margin-bottom: 0.5rem;">Мария Смирнова</h3>
+                    <p style="color: #667eea; font-weight: bold; margin-bottom: 0.5rem;">SEO-директор DigitalGroup</p>
+                    <p style="color: #666; font-size: 0.9rem;">Помогла 200+ проектам попасть в ТОП поиска. Эксперт по техническому SEO и контент-стратегиям</p>
+                </div>
+                
+                <div class="speaker-card">
+                    <div class="speaker-avatar">ДП</div>
+                    <h3 style="color: #333; margin-bottom: 0.5rem;">Дмитрий Петров</h3>
+                    <p style="color: #667eea; font-weight: bold; margin-bottom: 0.5rem;">Креативный директор AdGenius</p>
+                    <p style="color: #666; font-size: 0.9rem;">Создатель вирусных рекламных кампаний. Его работы собирали миллионы просмотров и тысячи лидов</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Расписание -->
+        <section>
+            <h2 style="text-align: center; margin: 4rem 0 2rem; color: #333;">🕒 ПРОГРАММА МЕРОПРИЯТИЯ</h2>
+            
+            <div class="schedule-timeline">
+                <div class="timeline-item">
+                    <span class="timeline-time">19:00 – 19:45</span>
+                    <h3 style="margin: 5px 0; color: #333;">Открытие. Заголовок — это 80% успеха</h3>
+                    <p style="color: #666;">Почему пользователи решают за 3 секунды, читать ваш контент или нет. Статистика и исследования.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <span class="timeline-time">19:45 – 20:30</span>
+                    <h3 style="margin: 5px 0; color: #333;">10 формул, которые работают всегда</h3>
+                    <p style="color: #666;">Разбор каждой формулы с примерами из реальных кейсов. Как адаптировать под свою нишу.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <span class="timeline-time">20:30 – 21:15</span>
+                    <h3 style="margin: 5px 0; color: #333;">SEO vs Продажи: как совместить?</h3>
+                    <p style="color: #666;">Технические аспекты заголовков для поисковиков. Keyword research и LSI-фразы.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <span class="timeline-time">21:15 – 22:00</span>
+                    <h3 style="margin: 5px 0; color: #333;">Практикум: создаём вместе</h3>
+                    <p style="color: #666;">Работа в мини-группах с экспертами. Разбор ваших заголовков. Ответы на вопросы.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Регистрация -->
+        <section style="text-align: center;">
+            <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 3rem; border-radius: 25px; margin: 3rem 0;">
+                <h2 style="color: #333; margin-bottom: 1rem;">🎟️ РЕГИСТРАЦИЯ</h2>
+                <p style="font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto 2rem;">
+                    Зарегистрируйтесь сейчас и получите:
+                </p>
+                
+                <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 2rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">📚</div>
+                        <p style="font-weight: bold;">Презентацию</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🎁</div>
+                        <p style="font-weight: bold;">Чек-листы</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🎥</div>
+                        <p style="font-weight: bold;">Запись</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">💬</div>
+                        <p style="font-weight: bold;">Чат с экспертами</p>
+                    </div>
+                </div>
+                
+                <button class="register-btn" id="registerBtn">
+                    ЗАРЕГИСТРИРОВАТЬСЯ БЕСПЛАТНО
+                </button>
+                <p id="registrationMessage" style="margin-top: 1.5rem; min-height: 30px;"></p>
+            </div>
         </section>
     </main>
 
-    <footer style="text-align: center; margin-top: 4rem; padding: 2rem; color: #666; border-top: 1px solid #ddd;">
-        <p>© 2024 Event: Titles Survive • Все права защищены</p>
-        <p style="margin-top: 1rem;">
-            <a href="index.html" style="color: #667eea; text-decoration: none;">← Вернуться на главную</a>
-        </p>
+    <!-- Футер -->
+    <footer style="background: #2d3436; color: white; padding: 3rem 0; margin-top: 4rem;">
+        <div class="event-container">
+            <div style="text-align: center;">
+                <h3 style="color: white; margin-bottom: 1rem;">TITLES SURVIVE</h3>
+                <p style="opacity: 0.8; max-width: 600px; margin: 0 auto 2rem;">
+                    Онлайн-воркшоп по созданию заголовков, которые привлекают внимание, 
+                    вызывают интерес и приводят клиентов
+                </p>
+                
+                <div class="back-home">
+                    <a href="index.html">
+                        <span>←</span> Вернуться на главную
+                    </a>
+                </div>
+                
+                <p style="margin-top: 2rem; opacity: 0.6; font-size: 0.9rem;">
+                    © 2024 Titles Survive Event. Все права защищены.
+                </p>
+            </div>
+        </div>
     </footer>
 
+    <!-- JavaScript -->
     <script>
         // Таймер обратного отсчета
         function updateCountdown() {
@@ -255,39 +481,94 @@ cat > event.html << 'EOF'
                 document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
                 document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
             } else {
-                document.getElementById('countdown').innerHTML = '<h3>🎉 Мероприятие началось!</h3>';
+                document.getElementById('countdown').innerHTML = `
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; backdrop-filter: blur(10px);">
+                        <h3 style="margin: 0; font-size: 2rem;">🎉 МЕРОПРИЯТИЕ НАЧАЛОСЬ!</h3>
+                        <p style="margin: 10px 0 0; opacity: 0.9;">Присоединяйтесь к трансляции</p>
+                    </div>
+                `;
             }
         }
         
+        // Запускаем таймер
         setInterval(updateCountdown, 1000);
         updateCountdown();
         
         // Регистрация
         document.getElementById('registerBtn').addEventListener('click', function() {
-            this.textContent = '✅ ВЫ ЗАРЕГИСТРИРОВАНЫ!';
-            this.style.background = 'linear-gradient(45deg, #43e97b 0%, #38f9d7 100%)';
-            this.disabled = true;
-            
+            const btn = this;
             const message = document.getElementById('registrationMessage');
-            message.innerHTML = 'Спасибо за регистрацию! Ссылка на трансляцию будет отправлена за 1 час до начала.';
-            message.style.color = 'green';
-            message.style.fontWeight = 'bold';
             
-            // Создаем эффект конфетти
-            for(let i = 0; i < 30; i++) {
+            // Анимация кнопки
+            btn.innerHTML = '✅ РЕГИСТРАЦИЯ УСПЕШНА!';
+            btn.style.background = 'linear-gradient(45deg, #43e97b 0%, #38f9d7 100%)';
+            btn.disabled = true;
+            
+            // Сообщение
+            message.innerHTML = `
+                <div style="background: rgba(67, 233, 123, 0.1); padding: 15px; border-radius: 10px; border: 2px solid #43e97b;">
+                    <strong style="color: #43e97b;">✅ Спасибо за регистрацию!</strong><br>
+                    Ссылка на Zoom-конференцию будет отправлена на ваш email за 1 час до начала мероприятия.<br>
+                    <small style="opacity: 0.8;">Проверьте папку "Спам", если не найдёте письмо.</small>
+                </div>
+            `;
+            
+            // Эффект конфетти
+            createConfetti();
+            
+            // Сохраняем в localStorage
+            localStorage.setItem('titlesSurviveRegistered', 'true');
+        });
+        
+        // Проверяем, уже регистрировался ли пользователь
+        if (localStorage.getItem('titlesSurviveRegistered') === 'true') {
+            document.getElementById('registerBtn').innerHTML = '✅ ВЫ УЖЕ ЗАРЕГИСТРИРОВАНЫ';
+            document.getElementById('registerBtn').style.background = 'linear-gradient(45deg, #43e97b 0%, #38f9d7 100%)';
+            document.getElementById('registerBtn').disabled = true;
+            document.getElementById('registrationMessage').innerHTML = `
+                <div style="color: #43e97b; font-weight: bold;">
+                    Вы уже зарегистрированы на это мероприятие
+                </div>
+            `;
+        }
+        
+        // Функция создания конфетти
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#43e97b', '#38f9d7'];
+            const emojis = ['🎯', '✨', '🚀', '🎉', '🔥', '💫', '🌟', '🎊'];
+            
+            for (let i = 0; i < 50; i++) {
                 const confetti = document.createElement('div');
-                confetti.textContent = ['🎉', '✨', '🎯', '🚀'][Math.floor(Math.random() * 4)];
+                confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
                 confetti.style.position = 'fixed';
                 confetti.style.left = Math.random() * 100 + 'vw';
                 confetti.style.top = '-50px';
-                confetti.style.fontSize = '25px';
+                confetti.style.fontSize = (Math.random() * 20 + 15) + 'px';
                 confetti.style.zIndex = '9999';
-                confetti.style.animation = `fall ${Math.random() * 2 + 2}s linear forwards`;
+                confetti.style.opacity = '0.9';
+                confetti.style.animation = `confettiFall ${Math.random() * 2 + 2}s linear forwards`;
+                confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
                 document.body.appendChild(confetti);
                 
-                setTimeout(() => confetti.remove(), 3000);
+                setTimeout(() => confetti.remove(), 4000);
             }
-        });
+        }
+        
+        // Добавляем стили для анимации конфетти
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes confettiFall {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(100vh) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
