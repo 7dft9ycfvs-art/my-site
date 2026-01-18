@@ -1,10 +1,9 @@
 services:
   - type: web
-    name: my-php-site
-    env: php
+    name: my-site
+    env: node
     buildCommand: ""
     startCommand: php -S 0.0.0.0:$PORT
     rootDir: .
-    envVars:
-      - key: PHP_VERSION
-        value: 8.2
+    plan: free
+    autoDeploy: true

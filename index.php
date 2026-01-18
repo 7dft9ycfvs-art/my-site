@@ -1,47 +1,56 @@
 <?php
+// index.php
 session_start();
-$pageTitle = 'Главная страница';
-include 'header.php';
 ?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой сайт</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.php"><i class="fas fa-rocket"></i> МойСайт</a>
+            </div>
+            <ul>
+                <?php if(isset($_SESSION['user_id'])): ?>
+                    <li><a href="profile.php"><i class="fas fa-user"></i> Профиль</a></li>
+                    <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Выйти</a></li>
+                <?php else: ?>
+                    <li><a href="index.php"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="login.php"><i class="fas fa-sign-in-alt"></i> Вход</a></li>
+                    <li><a href="register.php"><i class="fas fa-user-plus"></i> Регистрация</a></li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+    </header>
 
-<div class="hero">
-    <h1>Добро пожаловать на наш сайт!</h1>
-    <p>Здесь вы можете зарегистрироваться и получить доступ ко всем возможностям</p>
-    
-    <?php if(isset($_SESSION['user_id'])): ?>
-        <div class="welcome">
-            <h2>Привет, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
-            <p>Вы успешно вошли в систему.</p>
-            <a href="logout.php" class="btn btn-primary">Выйти</a>
+    <main>
+        <div class="hero">
+            <h1>Добро пожаловать!</h1>
+            <p>Современный сайт на PHP</p>
+            
+            <?php if(isset($_SESSION['user_id'])): ?>
+                <div class="welcome">
+                    <h2>Вы вошли в систему!</h2>
+                    <a href="logout.php" class="btn">Выйти</a>
+                </div>
+            <?php else: ?>
+                <div class="actions">
+                    <a href="register.php" class="btn btn-primary">Начать</a>
+                    <a href="login.php" class="btn btn-secondary">Войти</a>
+                </div>
+            <?php endif; ?>
         </div>
-    <?php else: ?>
-        <div class="auth-buttons">
-            <a href="login.php" class="btn btn-primary">
-                <i class="fas fa-sign-in-alt"></i> Войти
-            </a>
-            <a href="register.php" class="btn btn-primary">
-                <i class="fas fa-user-plus"></i> Зарегистрироваться
-            </a>
-        </div>
-    <?php endif; ?>
-</div>
+    </main>
 
-<div class="features">
-    <div class="feature">
-        <i class="fas fa-shield-alt fa-3x"></i>
-        <h3>Безопасность</h3>
-        <p>Надежное хранение ваших данных</p>
-    </div>
-    <div class="feature">
-        <i class="fas fa-bolt fa-3x"></i>
-        <h3>Быстро</h3>
-        <p>Мгновенная регистрация и вход</p>
-    </div>
-    <div class="feature">
-        <i class="fas fa-mobile-alt fa-3x"></i>
-        <h3>Доступно</h3>
-        <p>Адаптивный дизайн для всех устройств</p>
-    </div>
-</div>
-
-<?php include 'footer.php'; ?>
+    <footer>
+        <p>&copy; <?php echo date('Y'); ?> Мой сайт</p>
+    </footer>
+</body>
+</html>
