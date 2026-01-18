@@ -9,19 +9,45 @@
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
-    <div class="main-container">
-        <!-- Левая колонка -->
-        <div class="left-column" id="leftColumn">
+    <div class="page-wrapper">
+        <!-- Шапка -->
+        <div class="page-header" id="pageHeader">
             <!-- Загрузится через JS -->
         </div>
         
-        <!-- Правая колонка -->
-        <div class="right-column" id="rightColumn">
-            <!-- Загрузится через JS -->
+        <!-- Основной контент - центрированный -->
+        <div class="centered-container">
+            <!-- Верхний ряд: время и дата -->
+            <div class="top-row" id="topRow">
+                <!-- Загрузится через JS -->
+            </div>
+            
+            <!-- Средний ряд: события -->
+            <div class="middle-row" id="middleRow">
+                <!-- Загрузится через JS -->
+            </div>
+            
+            <!-- Нижний ряд: расписание и галерея -->
+            <div class="bottom-section">
+                <!-- Левая часть: расписание -->
+                <div class="bottom-left" id="bottomLeft">
+                    <!-- Загрузится через JS -->
+                </div>
+                
+                <!-- Правая часть: галерея и оплата -->
+                <div class="bottom-right" id="bottomRight">
+                    <!-- Загрузится через JS -->
+                </div>
+            </div>
+            
+            <!-- Настройки внизу -->
+            <div class="settings-row" id="settingsRow">
+                <!-- Загрузится через JS -->
+            </div>
         </div>
     </div>
     
-    <script src="modules/event-loader.js"></script>
+    <script src="modules/event-loader-v2.js"></script>
     <script src="modules/event-logic.js"></script>
 </body>
 </html>

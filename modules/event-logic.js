@@ -1,4 +1,4 @@
-// Основная логика для event.html
+// Основная логика - обновленная для центрированной версии
 
 // Данные расписания
 const scheduleCycle = [
@@ -20,18 +20,8 @@ let settings = {
     myPhoneNumber: "+7 (900) 123-45-67"
 };
 
-// Герои
-const heroes = [
-    { name: "Легионер", level: 45, power: 1200, health: 850, icon: "⚔️", color: "#ff6b6b" },
-    { name: "Маг Огня", level: 38, power: 1500, health: 480, icon: "🔥", color: "#ffa502" },
-    { name: "Лесной Лучник", level: 42, power: 980, health: 620, icon: "🏹", color: "#2ed573" },
-    { name: "Жрец Света", level: 35, power: 750, health: 920, icon: "✨", color: "#ffeaa7" },
-    { name: "Темный Рыцарь", level: 50, power: 1800, health: 1100, icon: "🛡️", color: "#6c5ce7" },
-    { name: "Эльфийка-Ведьма", level: 40, power: 1350, health: 580, icon: "🌙", color: "#a29bfe" }
-];
-
 function initEventLogic() {
-    console.log('Инициализация логики...');
+    console.log('Инициализация логики для центрированной версии...');
     
     loadSettings();
     setupEventListeners();
@@ -72,14 +62,9 @@ function loadSettings() {
 
 function setupEventListeners() {
     // Настройки
-    const settingsBtn = document.querySelector('[onclick="toggleSettings()"]');
+    const settingsBtn = document.querySelector('.settings-btn');
     if (settingsBtn) {
         settingsBtn.addEventListener('click', toggleSettings);
-    }
-    
-    const applyBtn = document.querySelector('[onclick="applySettings()"]');
-    if (applyBtn) {
-        applyBtn.addEventListener('click', applySettings);
     }
     
     // Платежи
@@ -150,10 +135,10 @@ function updateDateTime() {
     const dayOfWeek = now.toLocaleDateString('ru-RU', { weekday: 'long' });
     const dayOfWeekCapitalized = dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1);
     
-    // Обновляем элементы, если они есть
+    // Обновляем элементы
     updateElementText('realTime', timeStr);
-    updateElementText('currentDate', `Дата: ${dateStr}`);
-    updateElementText('dayOfWeek', `День недели: ${dayOfWeekCapitalized}`);
+    updateElementText('currentDate', dateStr);
+    updateElementText('dayOfWeek', dayOfWeekCapitalized);
     
     // День цикла
     const currentCycleDay = calculateCurrentCycleDay();
@@ -321,6 +306,23 @@ function showNotification(message) {
         notification.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => notification.remove(), 300);
     }, 3000);
+    
+    // Добавляем стили для анимации
+    if (!document.getElementById('notification-styles')) {
+        const style = document.createElement('style');
+        style.id = 'notification-styles';
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
 }
 
 // Экспортируем функцию для загрузчика
