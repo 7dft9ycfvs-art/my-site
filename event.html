@@ -170,7 +170,7 @@
             cursor: pointer;
         }
         
-        /* Блоки событий - меньшего размера */
+        /* Блоки событий */
         .events-row {
             display: flex;
             gap: 20px;
@@ -244,7 +244,7 @@
             font-family: 'Courier New', monospace;
         }
         
-        /* Расписание с подсветкой только текущего */
+        /* Расписание */
         .schedule-block {
             width: 100%;
             background: var(--card-bg);
@@ -291,7 +291,7 @@
         }
         
         .event-cell {
-            color: var(--text-primary); /* Все белым по умолчанию */
+            color: var(--text-primary);
         }
         
         .event-cell.active {
@@ -299,7 +299,7 @@
             font-weight: 600;
         }
         
-        /* Слайдер с фоткой и стрелочками */
+        /* Слайдер */
         .slider-block {
             width: 100%;
             background: var(--card-bg);
@@ -364,14 +364,64 @@
             min-width: 100px;
         }
         
-        /* Остальные блоки */
-        .payment-block, .heroes-block {
+        /* Свернутый блок оплаты */
+        .payment-collapsed {
             width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-collapsed:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .payment-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .payment-icon {
+            font-size: 2rem;
+        }
+        
+        .payment-title {
+            font-size: 1.4rem;
+            color: var(--text-primary);
+        }
+        
+        .payment-amount {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            margin: 10px 0;
+        }
+        
+        .payment-note {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        /* Развернутый блок оплаты (скрыт по умолчанию) */
+        .payment-expanded {
+            width: 100%;
+            max-width: 500px;
             background: var(--card-bg);
             border-radius: 16px;
             padding: 25px;
             border: 1px solid var(--border-color);
             text-align: center;
+            display: none;
         }
         
         .payment-form {
@@ -400,28 +450,6 @@
             text-align: center;
         }
         
-        .payment-info {
-            background: rgba(35, 134, 54, 0.1);
-            border: 1px solid rgba(35, 134, 54, 0.3);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .payment-phone {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin: 10px 0;
-        }
-        
-        .payment-amount {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--accent-green);
-            margin: 10px 0;
-        }
-        
         .submit-btn {
             width: 100%;
             background: var(--accent-green);
@@ -432,18 +460,18 @@
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 15px;
         }
         
         .thanks-block {
-            margin-top: 25px;
-            padding-top: 20px;
+            margin-top: 20px;
+            padding-top: 15px;
             border-top: 1px solid var(--border-color);
         }
         
         .thanks-text {
             color: var(--text-secondary);
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
         
         .developer {
@@ -533,7 +561,7 @@
             </table>
         </div>
         
-        <!-- Слайдер с фоткой -->
+        <!-- Слайдер -->
         <div class="slider-block">
             <div class="block-title">🖼️ ГАЛЕРЕЯ</div>
             
@@ -552,9 +580,26 @@
             </div>
         </div>
         
-        <!-- Оплата -->
-        <div class="payment-block">
+        <!-- СВЕРНУТЫЙ блок оплаты -->
+        <div class="payment-collapsed" onclick="togglePayment()">
+            <div class="payment-header">
+                <div class="payment-icon">💳</div>
+                <div class="payment-title">ПОДДЕРЖАТЬ ПРОЕКТ</div>
+            </div>
+            <div class="payment-amount">на печенье</div>
+            <div class="payment-note">кликните чтобы развернуть</div>
+        </div>
+        
+        <!-- РАЗВЕРНУТЫЙ блок оплаты (скрыт) -->
+        <div class="payment-expanded" id="paymentExpanded">
             <div class="block-title">💳 ПОДДЕРЖАТЬ ПРОЕКТ</div>
+            
+            <div class="payment-info">
+                <div class="payment-amount" style="font-size: 2rem; margin: 20px 0;">на печенье</div>
+                <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">
+                    Спасибо за поддержку!
+                </div>
+            </div>
             
             <form class="payment-form" id="paymentForm">
                 <div class="form-group">
@@ -562,18 +607,6 @@
                     <input type="tel" class="form-input" placeholder="+7 (900) 123-45-67" required 
                            pattern="\+7\s?[\(]?\d{3}[\)]?\s?\d{3}[\-]?\d{2}[\-]?\d{2}"
                            title="Формат: +7 (900) 123-45-67">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Сумма перевода:</label>
-                    <input type="number" class="form-input" value="200" min="50" max="5000" required>
-                </div>
-                
-                <div class="payment-info">
-                    <div>Переведите на номер:</div>
-                    <div class="payment-phone" id="myPhoneNumber">+7 (900) 123-45-67</div>
-                    <div>Сумма:</div>
-                    <div class="payment-amount" id="paymentAmount">200 ₽</div>
                 </div>
                 
                 <button type="submit" class="submit-btn" id="submitBtn">
@@ -591,7 +624,7 @@
     <script>
         // Логика планировщика
         const scheduleCycle = [
-            ["Улучшение героя", "Строирование", "Улучшение войск", "Исследования", "Снаряжение", "Улучшение героя"],
+            ["Улучшение героя", "Строительство", "Улучшение войск", "Исследования", "Снаряжение", "Улучшение героя"],
             ["Строительство", "Улучшение войск", "Исследования", "Снаряжение", "Улучшение героя", "Строительство"],
             ["Улучшение войск", "Исследования", "Снаряжение", "Улучшение героя", "Строительство", "Улучшение войск"],
             ["Исследования", "Снаряжение", "Улучшение героя", "Строительство", "Улучшение войск", "Исследования"],
@@ -604,8 +637,7 @@
         
         let settings = {
             startDay: 1,
-            lastAppliedDate: null,
-            myPhoneNumber: "+7 (900) 123-45-67"
+            lastAppliedDate: null
         };
         
         // Слайдер
@@ -627,15 +659,7 @@
             setInterval(updateDateTime, 1000);
             updateSlider();
             
-            document.getElementById('myPhoneNumber').textContent = settings.myPhoneNumber;
             document.getElementById('totalSlides').textContent = totalSlides;
-            
-            const amountInput = document.querySelector('input[type="number"]');
-            if (amountInput) {
-                amountInput.addEventListener('input', function() {
-                    document.getElementById('paymentAmount').textContent = this.value + ' ₽';
-                });
-            }
         });
         
         function loadSettings() {
@@ -663,6 +687,13 @@
             const panel = document.getElementById('settingsPanel');
             if (panel) {
                 panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+        
+        function togglePayment() {
+            const expanded = document.getElementById('paymentExpanded');
+            if (expanded) {
+                expanded.style.display = expanded.style.display === 'block' ? 'none' : 'block';
             }
         }
         
@@ -773,7 +804,7 @@
             document.getElementById('countdownTimer').textContent = 
                 `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
             
-            // Обновляем таблицу расписания (только текущее подсвечиваем)
+            // Обновляем таблицу расписания
             updateScheduleTable(daySchedule, currentSlotIndex);
         }
         
@@ -836,6 +867,9 @@
                 submitBtn.disabled = false;
                 submitBtn.textContent = '✅ ПОДТВЕРДИТЬ ПЕРЕВОД';
                 showNotification('Спасибо! Информация о переводе сохранена.');
+                
+                // Сворачиваем блок оплаты
+                document.getElementById('paymentExpanded').style.display = 'none';
             }, 1500);
         }
         
