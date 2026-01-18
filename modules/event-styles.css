@@ -1,0 +1,232 @@
+/* Основные стили для event.html */
+
+:root {
+    --primary-dark: #0d1117;
+    --secondary-dark: #161b22;
+    --card-bg: #21262d;
+    --text-primary: #f0f6fc;
+    --text-secondary: #8b949e;
+    --accent-green: #238636;
+    --accent-blue: #1f6feb;
+    --accent-purple: #8957e5;
+    --border-color: #30363d;
+}
+
+body {
+    background: var(--primary-dark);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.main-container {
+    display: flex;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+    .main-container {
+        flex-direction: column;
+    }
+}
+
+.left-column {
+    flex: 3;
+    min-width: 0;
+}
+
+.right-column {
+    flex: 2;
+    min-width: 300px;
+}
+
+/* Общие стили для всех модулей */
+.module {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 25px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.module-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.module-header h2 {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.module-title {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.module-subtitle {
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Кнопки */
+.btn {
+    background: var(--accent-blue);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn:hover {
+    background: #2b7de9;
+    transform: translateY(-1px);
+}
+
+.btn-green {
+    background: var(--accent-green);
+}
+
+.btn-green:hover {
+    background: #2ea043;
+}
+
+.btn-purple {
+    background: var(--accent-purple);
+}
+
+.btn-purple:hover {
+    background: #7b46e3;
+}
+
+/* Формы */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--secondary-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
+}
+
+/* Таблицы */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.data-table th {
+    text-align: left;
+    padding: 12px 0;
+    color: var(--text-secondary);
+    font-weight: 500;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table td {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Анимации */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.blink {
+    animation: blink 1.5s infinite;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Стили для таблицы расписания */
+.time-cell {
+    color: var(--text-secondary);
+    font-weight: 500;
+    width: 20%;
+}
+
+.event-cell {
+    position: relative;
+    padding-left: 15px;
+}
+
+.event-cell::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+}
+
+.event-cell.current::before {
+    background: var(--accent-green);
+    animation: pulse 2s infinite;
+}
+
+.event-cell.next::before {
+    background: var(--accent-blue);
+}
+
+.event-type {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.type-hero { background: rgba(255, 209, 102, 0.2); color: #ffd166; }
+.type-settlement { background: rgba(123, 91, 166, 0.2); color: #9d7bd6; }
+.type-troops { background: rgba(233, 69, 96, 0.2); color: #ff6b9d; }
+.type-tech { background: rgba(0, 180, 216, 0.2); color: #48cae4; }
+.type-equipment { background: rgba(67, 97, 238, 0.2); color: #6a8eff; }

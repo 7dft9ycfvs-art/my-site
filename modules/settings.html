@@ -1,0 +1,19 @@
+<div class="module">
+    <button class="btn" onclick="toggleSettings()" style="width: 100%;">
+        ⚙️ Настройки планировщика
+    </button>
+    
+    <div id="settingsPanel" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+        <div class="form-group">
+            <label class="form-label">📅 Стартовый день цикла (1-7):</label>
+            <input type="number" id="startDay" class="form-input" min="1" max="7" value="1">
+            <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">
+                Система автоматически считает дни от указанной даты
+            </div>
+        </div>
+        
+        <button class="btn btn-green" onclick="applySettings()" style="width: 100%; margin-top: 10px;">
+            💾 Применить настройки
+        </button>
+    </div>
+</div>
