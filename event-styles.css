@@ -22,3 +22,48 @@
   align-items: center;
   justify-content: center;
 }
+
+.centered-module {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+EOF && git add . && git commit -m "Центрированный дизайн с расширенной структурой" && git push
+
+# 1. Переходим в папку modules и центрируем все centered-файлы
+cd modules
+for file in centered-*.html; do
+  echo '<div class="centered-module">' > temp.html
+  cat "$file" >> temp.html
+  echo '</div>' >> temp.html
+  mv temp.html "$file"
+  echo "✅ Центрирован: $file"
+done
+
+# 2. Возвращаемся в корень проекта
+cd ..
+
+# 3. Добавляем стили центрирования в event-styles.css
+# (Если файла нет — создаём)
+if [ ! -f event-styles.css ]; then
+  touch event-styles.css
+fi
+
+# Добавляем стили
+cat >> event-styles.css << 'EOF'
+
+.centered-module {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
