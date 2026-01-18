@@ -244,7 +244,7 @@
             font-family: 'Courier New', monospace;
         }
         
-        /* Расписание */
+        /* ОБНОВЛЕННОЕ РАСПИСАНИЕ - с обводками */
         .schedule-block {
             width: 100%;
             background: var(--card-bg);
@@ -292,11 +292,45 @@
         
         .event-cell {
             color: var(--text-primary);
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s;
         }
         
-        .event-cell.active {
+        /* Текущее событие - зеленая обводка */
+        .event-cell.current {
+            background: rgba(35, 134, 54, 0.1);
+            border: 2px solid var(--accent-green);
             color: var(--accent-green);
             font-weight: 600;
+            position: relative;
+        }
+        
+        .event-cell.current::before {
+            content: '🟢';
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+        }
+        
+        /* Следующее событие - синяя обводка */
+        .event-cell.next {
+            background: rgba(31, 111, 235, 0.1);
+            border: 2px solid var(--accent-blue);
+            color: var(--accent-blue);
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .event-cell.next::before {
+            content: '⏭️';
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
         }
         
         /* Слайдер */
@@ -483,7 +517,7 @@
             </div>
         </div>
         
-        <!-- Расписание -->
+        <!-- ОБНОВЛЕННОЕ РАСПИСАНИЕ -->
         <div class="schedule-block">
             <div class="block-title">📅 РАСПИСАНИЕ НА СЕГОДНЯ</div>
             
@@ -706,11 +740,12 @@
             document.getElementById('countdownTimer').textContent = 
                 `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
             
-            // Обновляем таблицу расписания
-            updateScheduleTable(daySchedule, currentSlotIndex);
+            // ОБНОВЛЯЕМ ТАБЛИЦУ С ОБВОДКАМИ
+            updateScheduleTable(daySchedule, currentSlotIndex, nextSlotIndex);
         }
         
-        function updateScheduleTable(daySchedule, currentSlotIndex) {
+        // ОБНОВЛЕННАЯ ФУНКЦИЯ - добавляем обводки
+        function updateScheduleTable(daySchedule, currentSlotIndex, nextSlotIndex) {
             const scheduleBody = document.getElementById('scheduleBody');
             if (!scheduleBody) return;
             
@@ -728,8 +763,11 @@
                 // Событие
                 const eventCell = document.createElement('td');
                 eventCell.className = 'event-cell';
+                
                 if (i === currentSlotIndex) {
-                    eventCell.classList.add('active');
+                    eventCell.classList.add('current');
+                } else if (i === nextSlotIndex) {
+                    eventCell.classList.add('next');
                 }
                 
                 eventCell.textContent = daySchedule[i];
