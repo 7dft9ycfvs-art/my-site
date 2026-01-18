@@ -1,5 +1,6 @@
 {
-  "name": "my-site/php-app",
+  "name": "rohlya/test-site",
+  "description": "rohlya-test-site - тестовый сайт с регистрацией",
   "require": {
     "php": "^8.0"
   }

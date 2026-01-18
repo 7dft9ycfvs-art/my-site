@@ -24,3 +24,6 @@ try {
     die("Ошибка подключения к базе данных: " . $e->getMessage());
 }
 ?>
+// Название сайта
+define('SITE_NAME', 'rohlya-test-site');
+define('SITE_URL', 'https://rohlya-test-site.onrender.com');

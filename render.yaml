@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: my-site
+    name: rohlya-test-site
     env: node
     buildCommand: ""
     startCommand: php -S 0.0.0.0:$PORT
