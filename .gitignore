@@ -1,0 +1,8 @@
+database.db
+.env
+*.log
+/vendor/
+.DS_Store
+.idea/
+*.swp
+*.swo
