@@ -3,18 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event: Titles Survive - Планировщик</title>
+    <title>Игра по-крупному | Планировщик событий</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <style>
-        /* Основные стили события */
+        :root {
+            --primary-dark: #1a1a2e;
+            --secondary-dark: #16213e;
+            --accent-blue: #0f3460;
+            --accent-purple: #533483;
+            --accent-red: #e94560;
+            --text-light: #f1f1f1;
+            --text-muted: #b8b8b8;
+        }
+        
+        body {
+            background: var(--primary-dark);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
         .event-hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--secondary-dark) 0%, var(--accent-blue) 100%);
             padding: 3rem 2rem;
             text-align: center;
             border-radius: 0 0 30px 30px;
             margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .event-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(229, 69, 96, 0.1) 100%);
+            pointer-events: none;
         }
         
         .event-container {
@@ -23,37 +53,94 @@
             padding: 0 20px;
         }
         
-        /* Стили для планировщика */
-        .scheduler-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        .controls-panel {
+            background: var(--secondary-dark);
+            border-radius: 15px;
             padding: 2rem;
             margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .control-group {
+            margin-bottom: 2rem;
+        }
+        
+        .control-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-light);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .day-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--accent-purple);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .day-input:focus {
+            outline: none;
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.3);
+        }
+        
+        .color-picker {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .color-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.selected {
+            border-color: var(--text-light);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
         
         .current-time {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
             padding: 1.5rem;
             border-radius: 15px;
             margin-bottom: 2rem;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .time-display {
             font-size: 1.8rem;
             font-weight: bold;
-            color: #333;
+            color: var(--text-light);
             margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
         
         .date-display {
             font-size: 1.2rem;
-            color: #666;
+            color: var(--text-muted);
         }
         
         .current-event {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            background: linear-gradient(135deg, var(--accent-red) 0%, #ff6b9d 100%);
             color: white;
             padding: 1.5rem;
             border-radius: 15px;
@@ -62,10 +149,12 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px rgba(233, 69, 96, 0.3);
         }
         
         .next-event {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, var(--accent-purple) 0%, #7b5ba6 100%);
             color: white;
             padding: 1.5rem;
             border-radius: 15px;
@@ -74,17 +163,23 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px rgba(83, 52, 131, 0.3);
         }
         
         .event-label {
             font-size: 1.1rem;
             opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .event-name {
             font-size: 1.5rem;
             font-weight: bold;
             margin: 0.5rem 0;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
         .event-time {
@@ -92,94 +187,16 @@
             font-weight: bold;
         }
         
-        .day-selector {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 2rem 0;
-            justify-content: center;
-        }
-        
-        .day-btn {
-            padding: 12px 25px;
-            background: #f8f9fa;
-            border: 2px solid #dee2e6;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-            min-width: 60px;
-            text-align: center;
-        }
-        
-        .day-btn:hover {
-            background: #e9ecef;
-            transform: translateY(-2px);
-        }
-        
-        .day-btn.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2rem 0;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        
-        .schedule-table th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .schedule-table td {
-            padding: 1rem;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-            transition: background 0.3s;
-        }
-        
-        .schedule-table tr:hover td {
-            background: #f8f9fa;
-        }
-        
-        .time-slot {
-            font-weight: bold;
-            color: #667eea;
-            background: #f8f9fa !important;
-        }
-        
-        .current-slot {
-            background: rgba(67, 233, 123, 0.2) !important;
-            border-left: 4px solid #43e97b;
-            font-weight: bold;
-        }
-        
-        .next-slot {
-            background: rgba(79, 172, 254, 0.1) !important;
-            border-left: 4px solid #4facfe;
-        }
-        
         .countdown-timer {
             font-size: 1.4rem;
             font-weight: bold;
-            color: #333;
+            color: var(--text-light);
             padding: 10px 20px;
-            background: white;
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             display: inline-block;
             margin: 10px 0;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .legend {
@@ -188,6 +205,10 @@
             flex-wrap: wrap;
             justify-content: center;
             margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .legend-item {
@@ -201,21 +222,121 @@
             width: 20px;
             height: 20px;
             border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
         .event-type {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 6px 15px;
             border-radius: 20px;
             font-size: 0.9rem;
             margin: 2px;
+            font-weight: bold;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .type-hero { background: #ffeaa7; color: #2d3436; }
-        .type-settlement { background: #a29bfe; color: white; }
-        .type-troops { background: #fd79a8; color: white; }
-        .type-tech { background: #55efc4; color: #2d3436; }
-        .type-equipment { background: #74b9ff; color: white; }
+        .type-hero { background: linear-gradient(135deg, #ffd166, #ffb347); color: #1a1a2e; }
+        .type-settlement { background: linear-gradient(135deg, #7b5ba6, #9d7bd6); color: white; }
+        .type-troops { background: linear-gradient(135deg, #e94560, #ff6b9d); color: white; }
+        .type-tech { background: linear-gradient(135deg, #00b4d8, #48cae4); color: #1a1a2e; }
+        .type-equipment { background: linear-gradient(135deg, #4361ee, #6a8eff); color: white; }
+        
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--secondary-dark);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .schedule-table th {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            color: white;
+            padding: 1.2rem;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .schedule-table td {
+            padding: 1.2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+        }
+        
+        .schedule-table tr:hover td {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .time-slot {
+            font-weight: bold;
+            color: var(--accent-red);
+            background: rgba(255, 255, 255, 0.05) !important;
+        }
+        
+        .current-slot {
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.3), rgba(233, 69, 96, 0.1)) !important;
+            border-left: 4px solid var(--accent-red);
+            font-weight: bold;
+        }
+        
+        .next-slot {
+            background: linear-gradient(135deg, rgba(83, 52, 131, 0.3), rgba(83, 52, 131, 0.1)) !important;
+            border-left: 4px solid var(--accent-purple);
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--accent-red) 0%, #ff6b9d 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(233, 69, 96, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .back-home {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .back-home a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent-red);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 25px;
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .back-home a:hover {
+            background: var(--accent-red);
+            color: white;
+            transform: translateX(-5px);
+        }
         
         @media (max-width: 768px) {
             .current-event, .next-event {
@@ -230,57 +351,81 @@
             
             .schedule-table th,
             .schedule-table td {
-                padding: 0.7rem 0.5rem;
+                padding: 0.8rem 0.5rem;
             }
             
-            .day-btn {
-                padding: 10px 15px;
-                min-width: 50px;
+            .color-option {
+                width: 40px;
+                height: 40px;
             }
         }
         
-        .back-home {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid #eee;
+        .info-note {
+            background: linear-gradient(135deg, rgba(0, 180, 216, 0.1), rgba(72, 202, 228, 0.1));
+            border: 1px solid rgba(0, 180, 216, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
         
-        .back-home a {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: #667eea;
-            text-decoration: none;
+        .day-counter {
+            font-size: 2rem;
             font-weight: bold;
-            padding: 10px 25px;
-            border-radius: 25px;
-            background: #f8f9fa;
-            transition: all 0.3s;
-        }
-        
-        .back-home a:hover {
-            background: #667eea;
-            color: white;
-            transform: translateX(-5px);
+            color: var(--accent-red);
+            text-align: center;
+            margin: 1rem 0;
+            text-shadow: 0 2px 10px rgba(233, 69, 96, 0.3);
         }
     </style>
 </head>
 <body>
     <!-- Герой-секция -->
     <div class="event-hero">
-        <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">🎮 ПЛАНИРОВЩИК СОБЫТИЙ</h1>
-        <p style="font-size: 1.2rem; opacity: 0.9;">Оптимальное расписание на 7 дней</p>
+        <h1 style="font-size: 3rem; margin-bottom: 1rem; color: var(--text-light); text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
+            🎮 ИГРА ПО-КРУПНОМУ
+        </h1>
+        <p style="font-size: 1.3rem; opacity: 0.9; color: var(--text-muted);">
+            Циклический планировщик событий • Настрой и забудь
+        </p>
     </div>
 
     <!-- Основной контент -->
     <main class="event-container">
+        <!-- Панель управления -->
+        <div class="controls-panel">
+            <h2 style="color: var(--text-light); margin-bottom: 1.5rem; text-align: center;">🎛️ НАСТРОЙКИ</h2>
+            
+            <div class="control-group">
+                <label class="control-label">📅 С какого дня начать цикл (1-7):</label>
+                <input type="number" id="startDay" class="day-input" min="1" max="7" value="1">
+                <div class="info-note">
+                    💡 Введите день, с которого начнется циклическое расписание. После настройки система будет автоматически считать дни по кругу.
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">🎨 Выбери цвет фона:</label>
+                <div class="color-picker" id="colorPicker">
+                    <!-- Цвета будут добавлены через JavaScript -->
+                </div>
+            </div>
+            
+            <button class="btn" onclick="applySettings()" style="width: 100%; max-width: 300px; display: block; margin: 0 auto;">
+                💾 ПРИМЕНИТЬ НАСТРОЙКИ
+            </button>
+        </div>
+
         <!-- Текущее время и дата -->
         <div class="current-time">
             <div class="time-display" id="realTime">Загрузка времени...</div>
             <div class="date-display">
                 <span id="currentDate">Дата: --.--.----</span> • 
                 <span id="dayOfWeek">День недели: ----</span>
+            </div>
+            <div class="day-counter">
+                День цикла: <span id="currentCycleDay">1</span>
             </div>
         </div>
 
@@ -313,41 +458,35 @@
         <!-- Легенда -->
         <div class="legend">
             <div class="legend-item">
-                <div class="legend-color" style="background: #ffeaa7;"></div>
+                <div class="legend-color" style="background: linear-gradient(135deg, #ffd166, #ffb347);"></div>
                 <span>Улучшение героя</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background: #a29bfe;"></div>
+                <div class="legend-color" style="background: linear-gradient(135deg, #7b5ba6, #9d7bd6);"></div>
                 <span>Строительство поселения</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background: #fd79a8;"></div>
+                <div class="legend-color" style="background: linear-gradient(135deg, #e94560, #ff6b9d);"></div>
                 <span>Улучшение войск</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background: #55efc4;"></div>
+                <div class="legend-color" style="background: linear-gradient(135deg, #00b4d8, #48cae4);"></div>
                 <span>Исследование технологий</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background: #74b9ff;"></div>
+                <div class="legend-color" style="background: linear-gradient(135deg, #4361ee, #6a8eff);"></div>
                 <span>Усиление снаряжения</span>
             </div>
         </div>
 
-        <!-- Выбор дня -->
-        <div style="text-align: center; margin: 2rem 0;">
-            <h3 style="margin-bottom: 1rem; color: #333;">Выбери день:</h3>
-            <div class="day-selector" id="daySelector">
-                <!-- Дни будут добавлены через JavaScript -->
-            </div>
-        </div>
-
         <!-- Таблица расписания -->
-        <div class="scheduler-container">
-            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #333;">📅 РАСПИСАНИЕ НА ДЕНЬ <span id="selectedDay">1</span></h2>
+        <div style="background: var(--secondary-dark); padding: 2rem; border-radius: 15px; margin: 2rem 0; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--text-light);">
+                📅 РАСПИСАНИЕ НА СЕГОДНЯ
+            </h2>
             
             <div style="overflow-x: auto;">
-                <table class="schedule-table" id="scheduleTable">
+                <table class="schedule-table">
                     <thead>
                         <tr>
                             <th>Время</th>
@@ -366,33 +505,6 @@
             </div>
         </div>
 
-        <!-- Описание событий -->
-        <div style="background: #f8f9fa; padding: 2rem; border-radius: 15px; margin: 2rem 0;">
-            <h3 style="color: #333; margin-bottom: 1rem;">📝 Описание событий:</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                <div>
-                    <span class="event-type type-hero">Улучшение героя</span>
-                    <p style="margin-top: 10px; color: #666;">Прокачка характеристик героя, получение новых способностей и талантов.</p>
-                </div>
-                <div>
-                    <span class="event-type type-settlement">Строительство поселения</span>
-                    <p style="margin-top: 10px; color: #666;">Развитие инфраструктуры, постройка зданий и улучшение экономики.</p>
-                </div>
-                <div>
-                    <span class="event-type type-troops">Улучшение войск</span>
-                    <p style="margin-top: 10px; color: #666;">Тренировка солдат, исследование тактик и усиление армии.</p>
-                </div>
-                <div>
-                    <span class="event-type type-tech">Исследование технологий</span>
-                    <p style="margin-top: 10px; color: #666;">Научные открытия, улучшение производства и развитие технологий.</p>
-                </div>
-                <div>
-                    <span class="event-type type-equipment">Усиление снаряжения</span>
-                    <p style="margin-top: 10px; color: #666;">Крафт и улучшение оружия, брони и снаряжения.</p>
-                </div>
-            </div>
-        </div>
-
         <!-- Кнопка возврата -->
         <div class="back-home">
             <a href="index.html">
@@ -403,17 +515,17 @@
 
     <!-- JavaScript -->
     <script>
-        // Данные расписания
-        const scheduleData = {
-            1: ["Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя"],
-            2: ["Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения"],
-            3: ["Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения", "Улучшение войск"],
-            4: ["Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий"],
-            5: ["Усиление снаряжения", "Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения"],
-            6: ["Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя"],
-            7: ["Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения"]
-        };
-
+        // Циклическое расписание (7-дневный цикл)
+        const scheduleCycle = [
+            ["Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя"],
+            ["Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения"],
+            ["Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения", "Улучшение войск"],
+            ["Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий"],
+            ["Усиление снаряжения", "Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения"],
+            ["Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя"],
+            ["Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения"]
+        ];
+        
         // Временные слоты
         const timeSlots = ["03:00", "07:00", "11:00", "15:00", "19:00", "23:00"];
         
@@ -425,9 +537,140 @@
             "Исследование технологий": "type-tech",
             "Усиление снаряжения": "type-equipment"
         };
-
-        // Текущий выбранный день
-        let currentDay = 1;
+        
+        // Настройки (сохраняются в localStorage)
+        let settings = {
+            startDay: 1,  // День начала цикла (1-7)
+            theme: 'dark-blue'  // Текущая тема
+        };
+        
+        // Цветовые схемы
+        const colorSchemes = {
+            'dark-blue': {
+                primary: '#1a1a2e',
+                secondary: '#16213e',
+                accent1: '#0f3460',
+                accent2: '#533483'
+            },
+            'dark-purple': {
+                primary: '#2d1b69',
+                secondary: '#1f1235',
+                accent1: '#4c2882',
+                accent2: '#8a2be2'
+            },
+            'dark-red': {
+                primary: '#2d0b0b',
+                secondary: '#1a0505',
+                accent1: '#5a1a1a',
+                accent2: '#8b0000'
+            },
+            'dark-green': {
+                primary: '#0d2b1a',
+                secondary: '#051a0d',
+                accent1: '#1a5c2b',
+                accent2: '#2e8b57'
+            },
+            'dark-cyber': {
+                primary: '#0a0a0f',
+                secondary: '#151522',
+                accent1: '#00ffff',
+                accent2: '#ff00ff'
+            }
+        };
+        
+        // Инициализация настроек
+        function initSettings() {
+            const savedSettings = localStorage.getItem('gameSchedulerSettings');
+            if (savedSettings) {
+                settings = JSON.parse(savedSettings);
+                document.getElementById('startDay').value = settings.startDay;
+                updateTheme(settings.theme);
+            }
+            initColorPicker();
+        }
+        
+        // Инициализация выбора цвета
+        function initColorPicker() {
+            const colorPicker = document.getElementById('colorPicker');
+            colorPicker.innerHTML = '';
+            
+            Object.keys(colorSchemes).forEach(schemeKey => {
+                const scheme = colorSchemes[schemeKey];
+                const colorOption = document.createElement('div');
+                colorOption.className = `color-option ${schemeKey === settings.theme ? 'selected' : ''}`;
+                colorOption.style.background = `linear-gradient(135deg, ${scheme.primary}, ${scheme.secondary})`;
+                colorOption.dataset.scheme = schemeKey;
+                colorOption.onclick = () => selectColorScheme(schemeKey);
+                colorPicker.appendChild(colorOption);
+            });
+        }
+        
+        // Выбор цветовой схемы
+        function selectColorScheme(schemeKey) {
+            // Убираем выделение со всех
+            document.querySelectorAll('.color-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Выделяем выбранную
+            document.querySelector(`.color-option[data-scheme="${schemeKey}"]`).classList.add('selected');
+            settings.theme = schemeKey;
+        }
+        
+        // Применение настроек
+        function applySettings() {
+            const startDay = parseInt(document.getElementById('startDay').value);
+            
+            if (startDay < 1 || startDay > 7) {
+                alert('Пожалуйста, введите число от 1 до 7');
+                return;
+            }
+            
+            settings.startDay = startDay;
+            settings.lastAppliedDate = new Date().toDateString();
+            
+            // Сохраняем настройки
+            localStorage.setItem('gameSchedulerSettings', JSON.stringify(settings));
+            
+            // Применяем тему
+            updateTheme(settings.theme);
+            
+            // Обновляем отображение
+            updateDateTime();
+            
+            // Показываем уведомление
+            alert('Настройки сохранены! Система будет считать дни цикла начиная с ' + startDay + '-го дня.');
+        }
+        
+        // Обновление темы
+        function updateTheme(schemeKey) {
+            const scheme = colorSchemes[schemeKey];
+            if (!scheme) return;
+            
+            document.documentElement.style.setProperty('--primary-dark', scheme.primary);
+            document.documentElement.style.setProperty('--secondary-dark', scheme.secondary);
+            document.documentElement.style.setProperty('--accent-blue', scheme.accent1);
+            document.documentElement.style.setProperty('--accent-purple', scheme.accent2);
+        }
+        
+        // Расчет текущего дня цикла
+        function calculateCurrentCycleDay() {
+            // Если есть сохраненная дата начала
+            if (settings.lastAppliedDate) {
+                const startDate = new Date(settings.lastAppliedDate);
+                const currentDate = new Date();
+                
+                // Разница в днях
+                const diffTime = currentDate - startDate;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                
+                // День цикла (1-7)
+                return ((settings.startDay - 1 + diffDays) % 7) + 1;
+            }
+            
+            // Если нет сохраненной даты, используем startDay
+            return settings.startDay;
+        }
         
         // Функция для обновления времени
         function updateDateTime() {
@@ -455,6 +698,13 @@
             document.getElementById('currentDate').textContent = `Дата: ${dateStr}`;
             document.getElementById('dayOfWeek').textContent = `День недели: ${dayOfWeekCapitalized}`;
             
+            // Расчет текущего дня цикла
+            const currentCycleDay = calculateCurrentCycleDay();
+            document.getElementById('currentCycleDay').textContent = currentCycleDay;
+            
+            // Получаем расписание для текущего дня цикла
+            const daySchedule = scheduleCycle[currentCycleDay - 1];
+            
             // Определяем текущий временной слот
             const currentHour = now.getHours();
             const currentMinute = now.getMinutes();
@@ -479,8 +729,8 @@
             currentSlotIndex = (nextSlotIndex - 1 + timeSlots.length) % timeSlots.length;
             
             // Получаем события
-            const currentEvent = scheduleData[currentDay][currentSlotIndex];
-            const nextEvent = scheduleData[currentDay][nextSlotIndex];
+            const currentEvent = daySchedule[currentSlotIndex];
+            const nextEvent = daySchedule[nextSlotIndex];
             
             // Время до следующего события
             let nextSlotTime = timeSlots[nextSlotIndex];
@@ -511,16 +761,12 @@
                 `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
             
             // Обновляем таблицу
-            updateScheduleTable(currentSlotIndex, nextSlotIndex);
-            
-            // Обновляем выбор дня
-            updateDaySelector();
+            updateScheduleTable(daySchedule, currentSlotIndex, nextSlotIndex);
         }
         
         // Функция обновления таблицы расписания
-        function updateScheduleTable(currentSlotIndex, nextSlotIndex) {
+        function updateScheduleTable(daySchedule, currentSlotIndex, nextSlotIndex) {
             const scheduleBody = document.getElementById('scheduleBody');
-            const daySchedule = scheduleData[currentDay];
             
             // Очищаем таблицу
             scheduleBody.innerHTML = '';
@@ -558,32 +804,10 @@
             scheduleBody.appendChild(row);
         }
         
-        // Функция обновления выбора дня
-        function updateDaySelector() {
-            const daySelector = document.getElementById('daySelector');
-            daySelector.innerHTML = '';
-            
-            for (let day = 1; day <= 7; day++) {
-                const button = document.createElement('button');
-                button.className = `day-btn ${day === currentDay ? 'active' : ''}`;
-                button.textContent = day;
-                button.onclick = () => selectDay(day);
-                daySelector.appendChild(button);
-            }
-            
-            document.getElementById('selectedDay').textContent = currentDay;
-        }
-        
-        // Функция выбора дня
-        function selectDay(day) {
-            currentDay = day;
-            updateDateTime(); // Обновит все данные для выбранного дня
-        }
-        
         // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
-            // Создаем кнопки выбора дня
-            updateDaySelector();
+            // Загружаем настройки
+            initSettings();
             
             // Обновляем время сразу
             updateDateTime();
@@ -591,25 +815,6 @@
             // Обновляем время каждую секунду
             setInterval(updateDateTime, 1000);
         });
-        
-        // Функция для формата времени
-        function formatTime(date) {
-            return date.toLocaleTimeString('ru-RU', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            });
-        }
-        
-        // Функция для формата даты
-        function formatDate(date) {
-            return date.toLocaleDateString('ru-RU', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
-        }
     </script>
 </body>
 </html>
