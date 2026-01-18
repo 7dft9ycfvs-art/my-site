@@ -3,52 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой первый сайт</title>
+    <title>Игра по-крупному | Планировщик</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
-    <header>
-        <h1>✨ Добро пожаловать на мой сайт!</h1>
-        <nav>
-            <a href="#about">О сайте</a>
-            <a href="#gallery">Галерея</a>
-            <a href="#contact">Контакты</a>
-            <a href="event.html">🎯 Event: Titles Survive</a>
-        </nav>
-    </header>
+    <div class="center-container">
+        <!-- Шапка -->
+        <div class="header-block">
+            <h1 class="main-title">ИГРА ПО-КРУПНОМУ</h1>
+            <p class="subtitle">Циклический планировщик • Настроил один раз — работает автоматически</p>
+        </div>
 
-    <main>
-        <section id="about">
-            <h2>О чем этот сайт?</h2>
-            <p>Этот сайт создан вручную без конструкторов и CMS. Просто HTML, CSS и JavaScript!</p>
-            <button id="magicBtn">Нажми на меня</button>
-        </section>
-
-        <section id="gallery">
-            <h2>Галерея</h2>
-            <div class="gallery">
-                <div class="card">🎨 Элемент 1</div>
-                <div class="card">🚀 Элемент 2</div>
-                <div class="card">🌿 Элемент 3</div>
+        <!-- Таймер с шестеренкой -->
+        <div class="timer-block">
+            <div class="timer-header">
+                <div class="cycle-info">
+                    <div class="cycle-day">День цикла:</div>
+                    <div class="cycle-value" id="currentCycleDay">1</div>
+                </div>
+                <div class="settings-gear" onclick="toggleSettings()">⚙️</div>
             </div>
-        </section>
+            <div class="current-time" id="realTime">---</div>
+            <div class="current-date">
+                <span id="currentDate">---</span>
+                <span id="dayOfWeek">---</span>
+            </div>
+            <div class="settings-panel" id="settingsPanel">
+                <input type="number" id="startDay" class="settings-input" min="1" max="7" value="1" placeholder="День цикла (1-7)">
+                <button class="settings-btn" onclick="applySettings()">Применить</button>
+            </div>
+        </div>
 
-        <section id="contact">
-            <h2>Контакты</h2>
-            <form id="contactForm">
-                <input type="text" placeholder="Ваше имя" required>
-                <textarea placeholder="Сообщение..." rows="3"></textarea>
-                <button type="submit">Отправить</button>
-            </form>
-            <p id="formMessage"></p>
-        </section>
-    </main>
+        <!-- События -->
+        <div class="events-row">
+            <div class="event-card current-card">
+                <div class="event-title">
+                    <span class="blink" style="color: var(--accent-green);">ОСТАЛОСЬ СЕЙЧАС</span>
+                </div>
+                <div class="event-name" id="currentEventName">Загрузка...</div>
+                <div class="event-time">
+                    <div class="time-label">До <span style="color: var(--text-primary); font-weight: 500;" id="timeUntil">---</span></div>
+                    <div class="time-value" id="countdownTimer">---</div>
+                </div>
+            </div>
 
-    <footer>
-        <p>© 2023 Мой сайт. Создано с ❤️ без программ.</p>
-    </footer>
+            <div class="event-card next-card">
+                <div class="event-title" style="color: var(--accent-blue);">ДАЛЕЕ</div>
+                <div class="event-name" id="nextEventName">Загрузка...</div>
+                <div class="event-time">
+                    <div class="time-label">Начинается в</div>
+                    <div class="time-value" id="nextEventTime">--:--</div>
+                </div>
+            </div>
+        </div>
 
-    
+        <!-- ОБНОВЛЕННОЕ РАСПИСАНИЕ -->
+        <div class="schedule-block">
+            <div class="block-title">РАСПИСАНИЕ НА СЕГОДНЯ</div>
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Время</th>
+                        <th>Событие</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleBody">
+                    <!-- Заполнится через JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Слайдер -->
+        <div class="slider-block">
+            <div class="block-title">ГАЛЕРЕЯ</div>
+            <div class="slider-container">
+                <div class="slider-image" id="sliderImage">
+                    Место для фотографии
+                </div>
+                <div class="slider-nav">
+                    <div class="slider-arrow" onclick="prevSlide()">←</div>
+                    <div class="slider-counter">
+                        <span id="currentSlide">1</span> / <span id="totalSlides">5</span>
+                    </div>
+                    <div class="slider-arrow" onclick="nextSlide()">→</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Простой блок оплаты -->
+        <div class="payment-simple">
+            <div class="payment-title">
+                ПОДДЕРЖАТЬ ПРОЕКТ
+            </div>
+            <div class="payment-amount">на печенье</div>
+            <div class="phone-number" onclick="copyPhoneNumber()">
+                +7 (968) 974-72-00
+            </div>
+            <div class="payment-note">
+                Просто отправьте любую сумму на этот номер<br>
+                Спасибо за поддержку!
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
