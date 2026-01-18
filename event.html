@@ -34,39 +34,14 @@
             padding: 20px;
         }
         
-        .main-container {
-            display: flex;
-            gap: 25px;
-            max-width: 1300px;
+        .center-container {
+            width: 100%;
+            max-width: 800px;
             margin: 0 auto;
-            align-items: flex-start;
-        }
-        
-        @media (max-width: 1024px) {
-            .main-container {
-                flex-direction: column;
-            }
-        }
-        
-        .left-column {
-            flex: 1;
             display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 25px;
-        }
-        
-        .right-column {
-            flex: 0 0 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-        
-        @media (max-width: 1024px) {
-            .right-column {
-                flex: 1;
-                width: 100%;
-            }
         }
         
         /* Шапка */
@@ -94,6 +69,7 @@
         /* Блок таймера с шестеренкой */
         .timer-block {
             width: 100%;
+            max-width: 500px;
             background: var(--card-bg);
             border-radius: 16px;
             padding: 25px;
@@ -145,8 +121,9 @@
             border-color: var(--accent-blue);
         }
         
+        /* УВЕЛИЧИВАЕМ ДАТУ, УМЕНЬШАЕМ ЧАСЫ */
         .current-time {
-            font-size: 2.2rem;
+            font-size: 2rem; /* Было 2.2rem */
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 5px;
@@ -154,9 +131,10 @@
         }
         
         .current-date {
-            font-size: 1.1rem;
+            font-size: 1.4rem; /* Было 1.1rem */
             color: var(--text-secondary);
             margin-bottom: 15px;
+            font-weight: 500;
         }
         
         .settings-panel {
@@ -192,17 +170,18 @@
             cursor: pointer;
         }
         
-        /* БЛОКИ СОБЫТИЙ - теперь вертикально */
+        /* БЛОКИ СОБЫТИЙ - вертикально с задачами посередине */
         .events-column {
             display: flex;
             flex-direction: column;
             gap: 20px;
             width: 100%;
+            max-width: 500px;
         }
         
         .event-card {
             background: var(--card-bg);
-            border-radius: 14px;
+            border-radius: 16px;
             padding: 25px;
             border: 1px solid var(--border-color);
             text-align: center;
@@ -259,16 +238,13 @@
             font-family: 'Courier New', monospace;
         }
         
-        /* ОКНО ЗАДАНИЙ - постоянно видимое */
-        .tasks-window {
+        /* БЛОК ЗАДАНИЙ - между событиями */
+        .tasks-block {
             background: var(--card-bg);
             border-radius: 16px;
             padding: 25px;
             border: 3px solid var(--accent-orange);
-            box-shadow: 0 0 30px rgba(240, 136, 62, 0.3);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
+            box-shadow: 0 0 25px rgba(240, 136, 62, 0.25);
         }
         
         .tasks-header {
@@ -276,16 +252,16 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .tasks-icon {
-            font-size: 2rem;
+            font-size: 1.8rem;
             animation: bounce 2s infinite;
         }
         
         .tasks-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--accent-orange);
             font-weight: 600;
         }
@@ -316,7 +292,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin: 25px 0;
+            margin: 20px 0;
         }
         
         .task-item {
@@ -347,33 +323,6 @@
             font-weight: 600;
             font-size: 1.1rem;
             margin-left: 15px;
-        }
-        
-        .tasks-progress {
-            margin-top: 25px;
-        }
-        
-        .progress-bar {
-            height: 8px;
-            background: var(--secondary-dark);
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
-            border-radius: 4px;
-            width: 70%;
-            transition: width 0.5s;
-        }
-        
-        .progress-text {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
         }
         
         /* РАСПИСАНИЕ */
@@ -468,11 +417,11 @@
             font-size: 0.9rem;
         }
         
-        /* Прошедшие события */
+        /* ПРОШЕДШИЕ СОБЫТИЯ - затемненные */
         .event-cell.past {
-            color: var(--text-secondary);
-            opacity: 0.5;
-            background: rgba(48, 54, 61, 0.3);
+            color: #6e7681 !important; /* Более темный цвет */
+            opacity: 0.4 !important;
+            background: rgba(48, 54, 61, 0.2) !important;
         }
         
         /* Слайдер и оплата */
@@ -513,122 +462,53 @@
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <!-- ЛЕВАЯ КОЛОНКА: Основной контент -->
-        <div class="left-column">
-            <!-- Шапка -->
-            <div class="header-block">
-                <h1 class="main-title">🎮 ИГРА ПО-КРУПНОМУ</h1>
-                <p class="subtitle">Циклический планировщик • Настроил один раз — работает автоматически</p>
+    <div class="center-container">
+        <!-- Шапка -->
+        <div class="header-block">
+            <h1 class="main-title">🎮 ИГРА ПО-КРУПНОМУ</h1>
+            <p class="subtitle">Циклический планировщик • Настроил один раз — работает автоматически</p>
+        </div>
+        
+        <!-- Таймер -->
+        <div class="timer-block">
+            <div class="timer-header">
+                <div class="cycle-info">
+                    <div class="cycle-day">День цикла:</div>
+                    <div class="cycle-value" id="currentCycleDay">1</div>
+                </div>
+                <div class="settings-gear" onclick="toggleSettings()">⚙️</div>
             </div>
             
-            <!-- Таймер -->
-            <div class="timer-block">
-                <div class="timer-header">
-                    <div class="cycle-info">
-                        <div class="cycle-day">День цикла:</div>
-                        <div class="cycle-value" id="currentCycleDay">1</div>
-                    </div>
-                    <div class="settings-gear" onclick="toggleSettings()">⚙️</div>
-                </div>
-                
-                <div class="current-time" id="realTime">--:--:--</div>
-                <div class="current-date">
-                    <span id="currentDate">--.--.----</span> • 
-                    <span id="dayOfWeek">----</span>
-                </div>
-                
-                <div class="settings-panel" id="settingsPanel">
-                    <input type="number" id="startDay" class="settings-input" min="1" max="7" value="1" placeholder="День цикла (1-7)">
-                    <button class="settings-btn" onclick="applySettings()">💾 Применить</button>
-                </div>
+            <div class="current-time" id="realTime">--:--:--</div>
+            <div class="current-date">
+                <span id="currentDate">--.--.----</span> • 
+                <span id="dayOfWeek">----</span>
             </div>
             
-            <!-- БЛОКИ СОБЫТИЙ - вертикально -->
-            <div class="events-column">
-                <div class="event-card current-card">
-                    <div class="event-title">
-                        <span class="blink" style="color: var(--accent-green);">🟢 ИДЕТ СЕЙЧАС</span>
-                    </div>
-                    <div class="event-name" id="currentEventName">Загрузка...</div>
-                    <div class="event-time">
-                        <div class="time-label">
-                            🕐 До <span style="color: var(--text-primary); font-weight: 500;" id="timeUntil">--:--</span>
-                        </div>
-                        <div class="time-value" id="countdownTimer">--:--:--</div>
-                    </div>
-                </div>
-                
-                <div class="event-card next-card">
-                    <div class="event-title" style="color: var(--accent-blue);">
-                        <span class="tasks-icon">🔜</span> СЛЕДУЮЩЕЕ
-                    </div>
-                    <div class="event-name" id="nextEventName">Загрузка...</div>
-                    <div class="event-time">
-                        <div class="time-label">🕐 Начинается в</div>
-                        <div class="time-value" id="nextEventTime">--:--</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Расписание -->
-            <div class="schedule-block">
-                <div class="block-title">📅 РАСПИСАНИЕ НА СЕГОДНЯ</div>
-                
-                <table class="schedule-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 30%;">Время</th>
-                            <th>Событие</th>
-                        </tr>
-                    </thead>
-                    <tbody id="scheduleBody">
-                        <!-- Заполнится через JS -->
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- Слайдер -->
-            <div class="slider-block">
-                <div class="block-title">🖼️ ГАЛЕРЕЯ</div>
-                
-                <div class="slider-container">
-                    <div class="slider-image" id="sliderImage">
-                        📷 Место для фотографии
-                    </div>
-                    
-                    <div class="slider-nav">
-                        <div class="slider-arrow" onclick="prevSlide()">◀</div>
-                        <div class="slider-counter">
-                            <span id="currentSlide">1</span> / <span id="totalSlides">5</span>
-                        </div>
-                        <div class="slider-arrow" onclick="nextSlide()">▶</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Оплата -->
-            <div class="payment-simple">
-                <div class="payment-title">
-                    💳 ПОДДЕРЖАТЬ ПРОЕКТ
-                </div>
-                
-                <div class="payment-amount">на печенье</div>
-                
-                <div class="phone-number" onclick="copyPhoneNumber()">
-                    +7 (968) 974-72-00
-                </div>
-                
-                <div class="payment-note">
-                    Просто отправьте любую сумму на этот номер<br>
-                    Спасибо за поддержку! 🍪
-                </div>
+            <div class="settings-panel" id="settingsPanel">
+                <input type="number" id="startDay" class="settings-input" min="1" max="7" value="1" placeholder="День цикла (1-7)">
+                <button class="settings-btn" onclick="applySettings()">💾 Применить</button>
             </div>
         </div>
         
-        <!-- ПРАВАЯ КОЛОНКА: Окно заданий -->
-        <div class="right-column">
-            <div class="tasks-window">
+        <!-- БЛОКИ СОБЫТИЙ И ЗАДАНИЙ - вертикально -->
+        <div class="events-column">
+            <!-- Идет сейчас -->
+            <div class="event-card current-card">
+                <div class="event-title">
+                    <span class="blink" style="color: var(--accent-green);">🟢 ИДЕТ СЕЙЧАС</span>
+                </div>
+                <div class="event-name" id="currentEventName">Загрузка...</div>
+                <div class="event-time">
+                    <div class="time-label">
+                        🕐 До <span style="color: var(--text-primary); font-weight: 500;" id="timeUntil">--:--</span>
+                    </div>
+                    <div class="time-value" id="countdownTimer">--:--:--</div>
+                </div>
+            </div>
+            
+            <!-- Блок заданий между событиями -->
+            <div class="tasks-block">
                 <div class="tasks-header">
                     <div class="tasks-icon">🎯</div>
                     <div class="tasks-title">ВЫПОЛНЯЙТЕ ЗАДАНИЯ</div>
@@ -656,20 +536,72 @@
                         <div class="task-counter">x60 ✅</div>
                     </div>
                 </div>
-                
-                <div class="tasks-progress">
-                    <div class="progress-text">
-                        <span>Прогресс выполнения</span>
-                        <span>105/150 очков</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                    <div class="progress-text">
-                        <span>Текущее событие: <span id="currentTaskEvent">Строительство</span></span>
-                        <span>70%</span>
-                    </div>
+            </div>
+            
+            <!-- Следующее -->
+            <div class="event-card next-card">
+                <div class="event-title" style="color: var(--accent-blue);">
+                    <span class="tasks-icon">🔜</span> СЛЕДУЮЩЕЕ
                 </div>
+                <div class="event-name" id="nextEventName">Загрузка...</div>
+                <div class="event-time">
+                    <div class="time-label">🕐 Начинается в</div>
+                    <div class="time-value" id="nextEventTime">--:--</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Расписание -->
+        <div class="schedule-block">
+            <div class="block-title">📅 РАСПИСАНИЕ НА СЕГОДНЯ</div>
+            
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Время</th>
+                        <th>Событие</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleBody">
+                    <!-- Заполнится через JS -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Слайдер -->
+        <div class="slider-block">
+            <div class="block-title">🖼️ ГАЛЕРЕЯ</div>
+            
+            <div class="slider-container">
+                <div class="slider-image" id="sliderImage">
+                    📷 Место для фотографии
+                </div>
+                
+                <div class="slider-nav">
+                    <div class="slider-arrow" onclick="prevSlide()">◀</div>
+                    <div class="slider-counter">
+                        <span id="currentSlide">1</span> / <span id="totalSlides">5</span>
+                    </div>
+                    <div class="slider-arrow" onclick="nextSlide()">▶</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Оплата -->
+        <div class="payment-simple">
+            <div class="payment-title">
+                💳 ПОДДЕРЖАТЬ ПРОЕКТ
+            </div>
+            
+            <div class="payment-amount">на печенье</div>
+            
+            <div class="phone-number" onclick="copyPhoneNumber()">
+                +7 (968) 974-72-00
+            </div>
+            
+            <div class="payment-note">
+                Просто отправьте любую сумму на этот номер<br>
+                Спасибо за поддержку! 🍪
             </div>
         </div>
     </div>
@@ -717,7 +649,6 @@
             startTasksTimer();
             
             document.getElementById('totalSlides').textContent = totalSlides;
-            document.getElementById('currentTaskEvent').textContent = "Строительство";
         });
         
         function loadSettings() {
@@ -823,9 +754,6 @@
             const currentSlotIndex = (nextSlotIndex - 1 + timeSlots.length) % timeSlots.length;
             const currentEvent = daySchedule[currentSlotIndex];
             const nextEvent = daySchedule[nextSlotIndex];
-            
-            // Обновляем текущее событие в окне заданий
-            document.getElementById('currentTaskEvent').textContent = currentEvent;
             
             // Время до следующего события
             let nextTime = new Date();
