@@ -244,7 +244,7 @@
             font-family: 'Courier New', monospace;
         }
         
-        /* ОБНОВЛЕННОЕ РАСПИСАНИЕ - с обводками */
+        /* ОБНОВЛЕННОЕ РАСПИСАНИЕ - с красивым выделением */
         .schedule-block {
             width: 100%;
             background: var(--card-bg);
@@ -297,31 +297,35 @@
             transition: all 0.3s;
         }
         
-        /* Текущее событие - зеленая обводка */
+        /* КРАСИВОЕ ВЫДЕЛЕНИЕ В РАСПИСАНИИ */
         .event-cell.current {
-            background: rgba(35, 134, 54, 0.1);
+            background: linear-gradient(135deg, rgba(35, 134, 54, 0.15), rgba(35, 134, 54, 0.08));
             border: 2px solid var(--accent-green);
             color: var(--accent-green);
             font-weight: 600;
             position: relative;
+            box-shadow: 0 0 15px rgba(35, 134, 54, 0.3);
+            transform: scale(1.02);
+            transition: all 0.3s ease;
         }
         
         .event-cell.current::before {
-            content: '🟢';
+            content: '▶';
             position: absolute;
             left: -25px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 0.9rem;
+            font-size: 1rem;
+            animation: pulse 2s infinite;
         }
         
-        /* Следующее событие - синяя обводка */
         .event-cell.next {
-            background: rgba(31, 111, 235, 0.1);
+            background: linear-gradient(135deg, rgba(31, 111, 235, 0.15), rgba(31, 111, 235, 0.08));
             border: 2px solid var(--accent-blue);
             color: var(--accent-blue);
             font-weight: 600;
             position: relative;
+            box-shadow: 0 0 10px rgba(31, 111, 235, 0.2);
         }
         
         .event-cell.next::before {
@@ -331,6 +335,16 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 0.9rem;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .schedule-table tr:hover td:not(.time-cell) {
+            background: rgba(255, 255, 255, 0.05);
+            transition: background 0.2s ease;
         }
         
         /* Слайдер */
@@ -496,7 +510,7 @@
         <div class="events-row">
             <div class="event-card current-card">
                 <div class="event-title">
-                    <span class="blink" style="color: var(--accent-green);">🟢 ОСТАЛОСЬ СЕЙЧАС</span>
+                    <span class="blink" style="color: var(--accent-green);">🟢 ИДЕТ СЕЙЧАС</span>
                 </div>
                 <div class="event-name" id="currentEventName">Загрузка...</div>
                 <div class="event-time">
@@ -740,11 +754,10 @@
             document.getElementById('countdownTimer').textContent = 
                 `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
             
-            // ОБНОВЛЯЕМ ТАБЛИЦУ С ОБВОДКАМИ
+            // Обновляем таблицу с красивым выделением
             updateScheduleTable(daySchedule, currentSlotIndex, nextSlotIndex);
         }
         
-        // ОБНОВЛЕННАЯ ФУНКЦИЯ - добавляем обводки
         function updateScheduleTable(daySchedule, currentSlotIndex, nextSlotIndex) {
             const scheduleBody = document.getElementById('scheduleBody');
             if (!scheduleBody) return;
@@ -797,7 +810,6 @@
         function copyPhoneNumber() {
             const phoneNumber = "+7 (968) 974-72-00";
             
-            // Копируем в буфер обмена
             navigator.clipboard.writeText(phoneNumber)
                 .then(() => {
                     showNotification('Номер телефона скопирован!');
@@ -830,7 +842,6 @@
                 setTimeout(() => notification.remove(), 300);
             }, 3000);
             
-            // Добавляем стили для анимации
             if (!document.getElementById('notification-styles')) {
                 const style = document.createElement('style');
                 style.id = 'notification-styles';
