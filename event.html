@@ -34,13 +34,11 @@
             padding: 20px;
         }
         
-        .center-container {
-            width: 100%;
-            max-width: 800px;
+        .main-container {
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            align-items: center;
             gap: 25px;
         }
         
@@ -51,7 +49,7 @@
         }
         
         .main-title {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 10px;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
             -webkit-background-clip: text;
@@ -61,28 +59,28 @@
         
         .subtitle {
             color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 600px;
+            font-size: 1.2rem;
+            max-width: 800px;
             margin: 0 auto;
         }
         
-        /* Блок таймера с шестеренкой */
+        /* ТАЙМЕР - дата и часы поменяны местами */
         .timer-block {
             width: 100%;
-            max-width: 500px;
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
+            border-radius: 20px;
+            padding: 30px;
             border: 1px solid var(--border-color);
             text-align: center;
             position: relative;
+            margin-bottom: 10px;
         }
         
         .timer-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         .cycle-info {
@@ -90,12 +88,12 @@
         }
         
         .cycle-day {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-secondary);
         }
         
         .cycle-value {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: var(--accent-purple);
         }
@@ -104,15 +102,15 @@
             background: var(--secondary-dark);
             border: 1px solid var(--border-color);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: transform 0.3s;
             color: var(--text-secondary);
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
         
         .settings-gear:hover {
@@ -121,19 +119,26 @@
             border-color: var(--accent-blue);
         }
         
-        /* УВЕЛИЧИВАЕМ ДАТУ, УМЕНЬШАЕМ ЧАСЫ */
-        .current-time {
-            font-size: 2rem; /* Было 2.2rem */
+        /* ДАТА БОЛЬШЕ И СВЕРХУ */
+        .current-date {
+            font-size: 2rem; /* Увеличена */
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        
+        /* ЧАСЫ ЧУТЬ МЕНЬШЕ И СНИЗУ */
+        .current-time {
+            font-size: 1.8rem; /* Уменьшены */
+            font-weight: 500;
+            color: var(--text-secondary);
             font-family: 'Courier New', monospace;
         }
         
-        .current-date {
-            font-size: 1.4rem; /* Было 1.1rem */
-            color: var(--text-secondary);
-            margin-bottom: 15px;
+        .day-of-week {
+            font-size: 1.3rem;
+            color: var(--accent-blue);
+            margin-top: 5px;
             font-weight: 500;
         }
         
@@ -170,49 +175,60 @@
             cursor: pointer;
         }
         
-        /* БЛОКИ СОБЫТИЙ - вертикально с задачами посередине */
-        .events-column {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        /* ТРИ КОЛОНКИ: Сейчас - Задания - Следующее */
+        .events-row {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 25px;
             width: 100%;
-            max-width: 500px;
+            margin-bottom: 25px;
+        }
+        
+        @media (max-width: 1200px) {
+            .events-row {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
         }
         
         .event-card {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
+            border-radius: 18px;
+            padding: 30px;
             border: 1px solid var(--border-color);
             text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         
         .current-card {
-            border-top: 4px solid var(--accent-green);
+            border-left: 6px solid var(--accent-green);
         }
         
         .next-card {
-            border-top: 4px solid var(--accent-blue);
+            border-right: 6px solid var(--accent-blue);
         }
         
         .event-title {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
         }
         
         .event-name {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 600;
-            margin: 15px 0;
+            margin: 20px 0;
             color: var(--text-primary);
-            min-height: 60px;
+            min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -220,31 +236,34 @@
         
         .event-time {
             background: var(--secondary-dark);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
+            border-radius: 14px;
+            padding: 25px;
+            margin-top: 25px;
         }
         
         .time-label {
             color: var(--text-secondary);
-            margin-bottom: 8px;
-            font-size: 1rem;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
         }
         
         .time-value {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 600;
             color: var(--text-primary);
             font-family: 'Courier New', monospace;
         }
         
-        /* БЛОК ЗАДАНИЙ - между событиями */
+        /* ЦЕНТРАЛЬНЫЙ БЛОК ЗАДАНИЙ */
         .tasks-block {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
+            border-radius: 18px;
+            padding: 30px;
             border: 3px solid var(--accent-orange);
-            box-shadow: 0 0 25px rgba(240, 136, 62, 0.25);
+            box-shadow: 0 0 30px rgba(240, 136, 62, 0.3);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
         
         .tasks-header {
@@ -252,68 +271,70 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         .tasks-icon {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             animation: bounce 2s infinite;
         }
         
         .tasks-title {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             color: var(--accent-orange);
             font-weight: 600;
         }
         
         .tasks-timer {
             background: var(--secondary-dark);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 20px 0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
             text-align: center;
             border: 2px solid var(--border-color);
         }
         
         .timer-display {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 600;
             color: var(--text-primary);
             font-family: 'Courier New', monospace;
-            margin: 10px 0;
+            margin: 15px 0;
         }
         
         .timer-label {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
         
         .tasks-list {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin: 20px 0;
+            gap: 20px;
+            margin: 25px 0;
+            flex: 1;
         }
         
         .task-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 15px;
+            padding: 18px;
             background: var(--secondary-dark);
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid var(--border-color);
             transition: all 0.3s;
         }
         
         .task-item:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             border-color: var(--accent-blue);
+            box-shadow: 0 5px 15px rgba(31, 111, 235, 0.2);
         }
         
         .task-text {
             color: var(--text-primary);
-            font-size: 1rem;
+            font-size: 1.1rem;
             flex: 1;
             text-align: left;
         }
@@ -321,28 +342,29 @@
         .task-counter {
             color: var(--accent-green);
             font-weight: 600;
-            font-size: 1.1rem;
-            margin-left: 15px;
+            font-size: 1.2rem;
+            margin-left: 20px;
         }
         
-        /* РАСПИСАНИЕ */
+        /* РАСПИСАНИЕ - растянуто на всю ширину */
         .schedule-block {
             width: 100%;
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
+            border-radius: 20px;
+            padding: 30px;
             border: 1px solid var(--border-color);
             text-align: center;
+            margin-top: 10px;
         }
         
         .block-title {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             color: var(--text-primary);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
         }
         
         .schedule-table {
@@ -352,15 +374,16 @@
         }
         
         .schedule-table th {
-            padding: 12px 0;
+            padding: 15px 0;
             color: var(--text-secondary);
             font-weight: 500;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--border-color);
             text-align: center;
+            font-size: 1.1rem;
         }
         
         .schedule-table td {
-            padding: 14px 0;
+            padding: 18px 0;
             border-bottom: 1px solid var(--border-color);
             text-align: center;
         }
@@ -368,15 +391,17 @@
         .time-cell {
             color: var(--text-secondary);
             font-family: 'Courier New', monospace;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            width: 20%;
         }
         
         .event-cell {
             color: var(--text-primary);
-            padding: 12px 15px;
+            padding: 15px 20px;
             border-radius: 12px;
             transition: all 0.3s;
             border: 2px solid transparent;
+            width: 80%;
         }
         
         /* ТЕКУЩЕЕ СОБЫТИЕ - мигающая обводка */
@@ -386,17 +411,17 @@
             color: var(--accent-green);
             font-weight: 600;
             position: relative;
-            box-shadow: 0 0 20px rgba(35, 134, 54, 0.4);
+            box-shadow: 0 0 25px rgba(35, 134, 54, 0.4);
             animation: pulse-border 2s infinite;
         }
         
         .event-cell.current::before {
             content: '▶';
             position: absolute;
-            left: -25px;
+            left: -35px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 1rem;
+            font-size: 1.2rem;
         }
         
         /* СЛЕДУЮЩЕЕ СОБЫТИЕ */
@@ -411,44 +436,45 @@
         .event-cell.next::before {
             content: '🔜';
             position: absolute;
-            left: -25px;
+            left: -35px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 0.9rem;
+            font-size: 1.1rem;
         }
         
         /* ПРОШЕДШИЕ СОБЫТИЯ - затемненные */
         .event-cell.past {
-            color: #6e7681 !important; /* Более темный цвет */
+            color: #6e7681 !important;
             opacity: 0.4 !important;
-            background: rgba(48, 54, 61, 0.2) !important;
+            background: rgba(48, 54, 61, 0.15) !important;
         }
         
         /* Слайдер и оплата */
         .slider-block, .payment-simple {
             width: 100%;
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
+            border-radius: 20px;
+            padding: 30px;
             border: 1px solid var(--border-color);
             text-align: center;
+            margin-top: 25px;
         }
         
         /* Анимации */
         @keyframes pulse-border {
             0%, 100% { 
-                box-shadow: 0 0 20px rgba(35, 134, 54, 0.4);
+                box-shadow: 0 0 25px rgba(35, 134, 54, 0.4);
                 border-color: var(--accent-green);
             }
             50% { 
-                box-shadow: 0 0 30px rgba(35, 134, 54, 0.6);
+                box-shadow: 0 0 35px rgba(35, 134, 54, 0.6);
                 border-color: #3cb371;
             }
         }
         
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+            50% { transform: translateY(-8px); }
         }
         
         .blink {
@@ -462,14 +488,14 @@
     </style>
 </head>
 <body>
-    <div class="center-container">
+    <div class="main-container">
         <!-- Шапка -->
         <div class="header-block">
             <h1 class="main-title">🎮 ИГРА ПО-КРУПНОМУ</h1>
             <p class="subtitle">Циклический планировщик • Настроил один раз — работает автоматически</p>
         </div>
         
-        <!-- Таймер -->
+        <!-- ТАЙМЕР -->
         <div class="timer-block">
             <div class="timer-header">
                 <div class="cycle-info">
@@ -479,11 +505,14 @@
                 <div class="settings-gear" onclick="toggleSettings()">⚙️</div>
             </div>
             
+            <!-- ДАТА СВЕРХУ (большая) -->
+            <div class="current-date" id="currentDate">--.--.----</div>
+            
+            <!-- ЧАСЫ СНИЗУ (меньше) -->
             <div class="current-time" id="realTime">--:--:--</div>
-            <div class="current-date">
-                <span id="currentDate">--.--.----</span> • 
-                <span id="dayOfWeek">----</span>
-            </div>
+            
+            <!-- День недели -->
+            <div class="day-of-week" id="dayOfWeek">----</div>
             
             <div class="settings-panel" id="settingsPanel">
                 <input type="number" id="startDay" class="settings-input" min="1" max="7" value="1" placeholder="День цикла (1-7)">
@@ -491,9 +520,9 @@
             </div>
         </div>
         
-        <!-- БЛОКИ СОБЫТИЙ И ЗАДАНИЙ - вертикально -->
-        <div class="events-column">
-            <!-- Идет сейчас -->
+        <!-- ТРИ КОЛОНКИ: Сейчас - Задания - Следующее -->
+        <div class="events-row">
+            <!-- ЛЕВО: Идет сейчас -->
             <div class="event-card current-card">
                 <div class="event-title">
                     <span class="blink" style="color: var(--accent-green);">🟢 ИДЕТ СЕЙЧАС</span>
@@ -507,7 +536,7 @@
                 </div>
             </div>
             
-            <!-- Блок заданий между событиями -->
+            <!-- ЦЕНТР: Блок заданий -->
             <div class="tasks-block">
                 <div class="tasks-header">
                     <div class="tasks-icon">🎯</div>
@@ -538,7 +567,7 @@
                 </div>
             </div>
             
-            <!-- Следующее -->
+            <!-- ПРАВО: Следующее -->
             <div class="event-card next-card">
                 <div class="event-title" style="color: var(--accent-blue);">
                     <span class="tasks-icon">🔜</span> СЛЕДУЮЩЕЕ
@@ -551,14 +580,14 @@
             </div>
         </div>
         
-        <!-- Расписание -->
+        <!-- РАСПИСАНИЕ - растянуто на всю ширину -->
         <div class="schedule-block">
             <div class="block-title">📅 РАСПИСАНИЕ НА СЕГОДНЯ</div>
             
             <table class="schedule-table">
                 <thead>
                     <tr>
-                        <th style="width: 30%;">Время</th>
+                        <th class="time-cell">Время</th>
                         <th>Событие</th>
                     </tr>
                 </thead>
@@ -568,7 +597,7 @@
             </table>
         </div>
         
-        <!-- Слайдер -->
+        <!-- Слайдер и оплата под расписанием -->
         <div class="slider-block">
             <div class="block-title">🖼️ ГАЛЕРЕЯ</div>
             
@@ -726,7 +755,7 @@
             const dayOfWeek = now.toLocaleDateString('ru-RU', { weekday: 'long' });
             const dayOfWeekCapitalized = dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1);
             
-            // Обновляем элементы
+            // Обновляем элементы (дата сверху, время снизу)
             document.getElementById('realTime').textContent = timeStr;
             document.getElementById('currentDate').textContent = dateStr;
             document.getElementById('dayOfWeek').textContent = dayOfWeekCapitalized;
