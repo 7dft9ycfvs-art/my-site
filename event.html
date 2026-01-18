@@ -364,56 +364,8 @@
             min-width: 100px;
         }
         
-        /* Свернутый блок оплаты */
-        .payment-collapsed {
-            width: 100%;
-            max-width: 500px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .payment-collapsed:hover {
-            background: var(--secondary-dark);
-            transform: translateY(-2px);
-        }
-        
-        .payment-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .payment-icon {
-            font-size: 2rem;
-        }
-        
-        .payment-title {
-            font-size: 1.4rem;
-            color: var(--text-primary);
-        }
-        
-        .payment-amount {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--accent-green);
-            margin: 10px 0;
-        }
-        
-        .payment-note {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 10px;
-        }
-        
-        /* Развернутый блок оплаты (скрыт по умолчанию) */
-        .payment-expanded {
+        /* Простой блок оплаты */
+        .payment-simple {
             width: 100%;
             max-width: 500px;
             background: var(--card-bg);
@@ -421,62 +373,49 @@
             padding: 25px;
             border: 1px solid var(--border-color);
             text-align: center;
-            display: none;
         }
         
-        .payment-form {
-            margin-top: 20px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
+        .payment-title {
+            font-size: 1.4rem;
             color: var(--text-primary);
-            font-weight: 500;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            background: var(--secondary-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            text-align: center;
-        }
-        
-        .submit-btn {
-            width: 100%;
-            background: var(--accent-green);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 1.1rem;
+        .payment-amount {
+            font-size: 2rem;
             font-weight: 600;
+            color: var(--accent-green);
+            margin: 15px 0;
+        }
+        
+        .phone-number {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            background: var(--secondary-dark);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            border: 1px solid var(--border-color);
             cursor: pointer;
-            margin-top: 15px;
+            transition: all 0.2s;
         }
         
-        .thanks-block {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-color);
+        .phone-number:hover {
+            background: var(--border-color);
+            transform: scale(1.02);
         }
         
-        .thanks-text {
+        .payment-note {
             color: var(--text-secondary);
-            margin-bottom: 5px;
-        }
-        
-        .developer {
-            color: var(--accent-blue);
-            font-weight: 500;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            line-height: 1.4;
         }
         
         .blink {
@@ -580,43 +519,21 @@
             </div>
         </div>
         
-        <!-- СВЕРНУТЫЙ блок оплаты -->
-        <div class="payment-collapsed" onclick="togglePayment()">
-            <div class="payment-header">
-                <div class="payment-icon">💳</div>
-                <div class="payment-title">ПОДДЕРЖАТЬ ПРОЕКТ</div>
+        <!-- Простой блок оплаты -->
+        <div class="payment-simple">
+            <div class="payment-title">
+                💳 ПОДДЕРЖАТЬ ПРОЕКТ
             </div>
+            
             <div class="payment-amount">на печенье</div>
-            <div class="payment-note">кликните чтобы развернуть</div>
-        </div>
-        
-        <!-- РАЗВЕРНУТЫЙ блок оплаты (скрыт) -->
-        <div class="payment-expanded" id="paymentExpanded">
-            <div class="block-title">💳 ПОДДЕРЖАТЬ ПРОЕКТ</div>
             
-            <div class="payment-info">
-                <div class="payment-amount" style="font-size: 2rem; margin: 20px 0;">на печенье</div>
-                <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">
-                    Спасибо за поддержку!
-                </div>
+            <div class="phone-number" onclick="copyPhoneNumber()">
+                +7 (968) 974-72-00
             </div>
             
-            <form class="payment-form" id="paymentForm">
-                <div class="form-group">
-                    <label class="form-label">Номер телефона:</label>
-                    <input type="tel" class="form-input" placeholder="+7 (900) 123-45-67" required 
-                           pattern="\+7\s?[\(]?\d{3}[\)]?\s?\d{3}[\-]?\d{2}[\-]?\d{2}"
-                           title="Формат: +7 (900) 123-45-67">
-                </div>
-                
-                <button type="submit" class="submit-btn" id="submitBtn">
-                    ✅ ПОДТВЕРДИТЬ ПЕРЕВОД
-                </button>
-            </form>
-            
-            <div class="thanks-block">
-                <div class="thanks-text">Спасибо за работу!</div>
-                <div class="developer">Разработчик: Alex GameMaster</div>
+            <div class="payment-note">
+                Просто отправьте любую сумму на этот номер<br>
+                Спасибо за поддержку! 🍪
             </div>
         </div>
     </div>
@@ -654,7 +571,6 @@
         // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
-            setupEventListeners();
             updateDateTime();
             setInterval(updateDateTime, 1000);
             updateSlider();
@@ -676,24 +592,10 @@
             }
         }
         
-        function setupEventListeners() {
-            const paymentForm = document.getElementById('paymentForm');
-            if (paymentForm) {
-                paymentForm.addEventListener('submit', processPayment);
-            }
-        }
-        
         function toggleSettings() {
             const panel = document.getElementById('settingsPanel');
             if (panel) {
                 panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-            }
-        }
-        
-        function togglePayment() {
-            const expanded = document.getElementById('paymentExpanded');
-            if (expanded) {
-                expanded.style.display = expanded.style.display === 'block' ? 'none' : 'block';
             }
         }
         
@@ -853,24 +755,19 @@
             updateSlider();
         }
         
-        function processPayment(event) {
-            event.preventDefault();
+        // Копирование номера телефона
+        function copyPhoneNumber() {
+            const phoneNumber = "+7 (968) 974-72-00";
             
-            const submitBtn = document.getElementById('submitBtn');
-            if (!submitBtn) return;
-            
-            // Блокируем кнопку
-            submitBtn.disabled = true;
-            submitBtn.textContent = '⏳ Обработка...';
-            
-            setTimeout(() => {
-                submitBtn.disabled = false;
-                submitBtn.textContent = '✅ ПОДТВЕРДИТЬ ПЕРЕВОД';
-                showNotification('Спасибо! Информация о переводе сохранена.');
-                
-                // Сворачиваем блок оплаты
-                document.getElementById('paymentExpanded').style.display = 'none';
-            }, 1500);
+            // Копируем в буфер обмена
+            navigator.clipboard.writeText(phoneNumber)
+                .then(() => {
+                    showNotification('Номер телефона скопирован!');
+                })
+                .catch(err => {
+                    console.error('Ошибка копирования:', err);
+                    showNotification('Не удалось скопировать номер');
+                });
         }
         
         function showNotification(message) {
