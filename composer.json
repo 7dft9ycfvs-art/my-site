@@ -1,12 +1,9 @@
 {
-    "name": "rohlya/my-site",
-    "description": "Мой PHP сайт с регистрацией",
-    "type": "project",
-    "require": {
-        "php": ">=7.4"
-    },
-    "require-dev": {
-        "ext-pdo": "*",
-        "ext-pdo_sqlite": "*"
-    }
+  "name": "my-site/php-app",
+  "require": {
+    "php": "^8.0"
+  },
+  "scripts": {
+    "start": "php -S 0.0.0.0:$PORT"
+  }
 }

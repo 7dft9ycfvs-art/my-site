@@ -2,14 +2,9 @@ services:
   - type: web
     name: my-php-site
     env: php
-    buildCommand: "composer install --no-dev --optimize-autoloader"
-    startCommand: "php -S 0.0.0.0:\$PORT"
-    healthCheckPath: /
-    autoDeploy: true
+    buildCommand: ""
+    startCommand: php -S 0.0.0.0:$PORT
+    rootDir: .
     envVars:
-      - key: APP_ENV
-        value: production
-    disk:
-      name: data
-      mountPath: /var/www/html/data
-      sizeGB: 1
+      - key: PHP_VERSION
+        value: 8.2
