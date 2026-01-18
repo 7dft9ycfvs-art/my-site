@@ -31,20 +31,42 @@
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             padding: 20px;
-            position: relative;
         }
         
-        .center-container {
-            width: 100%;
-            max-width: 800px;
+        .main-container {
+            display: flex;
+            gap: 25px;
+            max-width: 1300px;
+            margin: 0 auto;
+            align-items: flex-start;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+        }
+        
+        .left-column {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: center;
             gap: 25px;
+        }
+        
+        .right-column {
+            flex: 0 0 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        @media (max-width: 1024px) {
+            .right-column {
+                flex: 1;
+                width: 100%;
+            }
         }
         
         /* Шапка */
@@ -72,14 +94,12 @@
         /* Блок таймера с шестеренкой */
         .timer-block {
             width: 100%;
-            max-width: 500px;
             background: var(--card-bg);
             border-radius: 16px;
             padding: 25px;
             border: 1px solid var(--border-color);
             text-align: center;
             position: relative;
-            margin-bottom: 10px;
         }
         
         .timer-header {
@@ -172,29 +192,18 @@
             cursor: pointer;
         }
         
-        /* Блоки событий */
-        .events-row {
+        /* БЛОКИ СОБЫТИЙ - теперь вертикально */
+        .events-column {
             display: flex;
+            flex-direction: column;
             gap: 20px;
             width: 100%;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        
-        @media (max-width: 768px) {
-            .events-row {
-                flex-direction: column;
-                align-items: center;
-            }
         }
         
         .event-card {
-            flex: 1;
-            min-width: 250px;
-            max-width: 350px;
             background: var(--card-bg);
             border-radius: 14px;
-            padding: 20px;
+            padding: 25px;
             border: 1px solid var(--border-color);
             text-align: center;
         }
@@ -212,15 +221,19 @@
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         .event-name {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 600;
-            margin: 10px 0;
+            margin: 15px 0;
             color: var(--text-primary);
-            min-height: 50px;
+            min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -228,25 +241,142 @@
         
         .event-time {
             background: var(--secondary-dark);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
         }
         
         .time-label {
             color: var(--text-secondary);
-            margin-bottom: 5px;
-            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-size: 1rem;
         }
         
         .time-value {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 600;
             color: var(--text-primary);
             font-family: 'Courier New', monospace;
         }
         
-        /* УЛУЧШЕННОЕ РАСПИСАНИЕ */
+        /* ОКНО ЗАДАНИЙ - постоянно видимое */
+        .tasks-window {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            border: 3px solid var(--accent-orange);
+            box-shadow: 0 0 30px rgba(240, 136, 62, 0.3);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .tasks-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .tasks-icon {
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+        
+        .tasks-title {
+            font-size: 1.5rem;
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+        
+        .tasks-timer {
+            background: var(--secondary-dark);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px solid var(--border-color);
+        }
+        
+        .timer-display {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+        
+        .timer-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: var(--secondary-dark);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+        
+        .task-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-blue);
+        }
+        
+        .task-text {
+            color: var(--text-primary);
+            font-size: 1rem;
+            flex: 1;
+            text-align: left;
+        }
+        
+        .task-counter {
+            color: var(--accent-green);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-left: 15px;
+        }
+        
+        .tasks-progress {
+            margin-top: 25px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--secondary-dark);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+            border-radius: 4px;
+            width: 70%;
+            transition: width 0.5s;
+        }
+        
+        .progress-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        /* РАСПИСАНИЕ */
         .schedule-block {
             width: 100%;
             background: var(--card-bg);
@@ -296,313 +426,80 @@
             color: var(--text-primary);
             padding: 12px 15px;
             border-radius: 12px;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             border: 2px solid transparent;
         }
         
-        /* ТЕКУЩЕЕ СОБЫТИЕ - мигающая обводка с закругленными краями */
+        /* ТЕКУЩЕЕ СОБЫТИЕ - мигающая обводка */
         .event-cell.current {
-            background: linear-gradient(135deg, rgba(35, 134, 54, 0.1), rgba(35, 134, 54, 0.05));
+            background: linear-gradient(135deg, rgba(35, 134, 54, 0.15), rgba(35, 134, 54, 0.08));
             border: 2px solid var(--accent-green);
             color: var(--accent-green);
             font-weight: 600;
             position: relative;
-            box-shadow: 0 0 20px rgba(35, 134, 54, 0.3);
+            box-shadow: 0 0 20px rgba(35, 134, 54, 0.4);
             animation: pulse-border 2s infinite;
         }
         
         .event-cell.current::before {
             content: '▶';
             position: absolute;
-            left: -30px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.1rem;
-            animation: pulse-icon 1.5s infinite;
-        }
-        
-        /* СЛЕДУЮЩЕЕ СОБЫТИЕ - красивая синяя обводка */
-        .event-cell.next {
-            background: linear-gradient(135deg, rgba(31, 111, 235, 0.1), rgba(31, 111, 235, 0.05));
-            border: 2px solid var(--accent-blue);
-            color: var(--accent-blue);
-            font-weight: 600;
-            position: relative;
-            box-shadow: 0 0 15px rgba(31, 111, 235, 0.2);
-        }
-        
-        .event-cell.next::before {
-            content: '🔜';
-            position: absolute;
-            left: -30px;
+            left: -25px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 1rem;
         }
         
-        /* Прошедшие события - затемненные */
+        /* СЛЕДУЮЩЕЕ СОБЫТИЕ */
+        .event-cell.next {
+            background: linear-gradient(135deg, rgba(31, 111, 235, 0.15), rgba(31, 111, 235, 0.08));
+            border: 2px solid var(--accent-blue);
+            color: var(--accent-blue);
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .event-cell.next::before {
+            content: '🔜';
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+        }
+        
+        /* Прошедшие события */
         .event-cell.past {
             color: var(--text-secondary);
-            opacity: 0.6;
-            background: rgba(139, 148, 158, 0.05);
+            opacity: 0.5;
+            background: rgba(48, 54, 61, 0.3);
+        }
+        
+        /* Слайдер и оплата */
+        .slider-block, .payment-simple {
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            text-align: center;
         }
         
         /* Анимации */
         @keyframes pulse-border {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(35, 134, 54, 0.3);
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(35, 134, 54, 0.4);
                 border-color: var(--accent-green);
             }
-            50% {
-                box-shadow: 0 0 30px rgba(35, 134, 54, 0.5);
+            50% { 
+                box-shadow: 0 0 30px rgba(35, 134, 54, 0.6);
                 border-color: #3cb371;
             }
         }
         
-        @keyframes pulse-icon {
-            0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
-            50% { opacity: 0.7; transform: translateY(-50%) scale(1.1); }
-        }
-        
-        /* Эффект при наведении */
-        .schedule-table tr:hover .event-cell:not(.current):not(.next) {
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-2px);
-        }
-        
-        /* Слайдер */
-        .slider-block {
-            width: 100%;
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
-        
-        .slider-container {
-            position: relative;
-            margin: 20px auto;
-            max-width: 500px;
-        }
-        
-        .slider-image {
-            width: 100%;
-            height: 300px;
-            background: var(--secondary-dark);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            border: 2px dashed var(--border-color);
-            margin-bottom: 15px;
-        }
-        
-        .slider-nav {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            margin-top: 20px;
-        }
-        
-        .slider-arrow {
-            background: var(--secondary-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-        }
-        
-        .slider-arrow:hover {
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
-            transform: scale(1.1);
-        }
-        
-        .slider-counter {
-            font-size: 1.1rem;
-            color: var(--text-primary);
-            min-width: 100px;
-        }
-        
-        /* Простой блок оплаты */
-        .payment-simple {
-            width: 100%;
-            max-width: 500px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
-        
-        .payment-title {
-            font-size: 1.4rem;
-            color: var(--text-primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .payment-amount {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--accent-green);
-            margin: 15px 0;
-        }
-        
-        .phone-number {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            background: var(--secondary-dark);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 20px 0;
-            font-family: 'Courier New', monospace;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .phone-number:hover {
-            background: var(--border-color);
-            transform: scale(1.02);
-        }
-        
-        .payment-note {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 20px;
-            line-height: 1.4;
-        }
-        
-        /* УВЕДОМЛЕНИЯ О СОБЫТИЯХ */
-        .notification-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(13, 17, 23, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            display: none;
-        }
-        
-        .notification-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            border: 3px solid var(--accent-orange);
-            box-shadow: 0 0 40px rgba(240, 136, 62, 0.4);
-            text-align: center;
-            position: relative;
-            animation: slide-up 0.5s ease;
-        }
-        
-        .notification-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .notification-icon {
-            font-size: 2.5rem;
-            animation: bounce 2s infinite;
-        }
-        
-        .notification-title {
-            font-size: 1.8rem;
-            color: var(--accent-orange);
-            font-weight: 600;
-        }
-        
-        .notification-content {
-            background: var(--secondary-dark);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: left;
-        }
-        
-        .notification-task {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .notification-task:last-child {
-            border-bottom: none;
-        }
-        
-        .task-text {
-            color: var(--text-primary);
-            font-size: 1.1rem;
-        }
-        
-        .task-status {
-            color: var(--accent-green);
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-        
-        .notification-timer {
-            font-size: 1.3rem;
-            color: var(--text-secondary);
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .notification-btn {
-            background: var(--accent-orange);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: all 0.3s;
-            width: 100%;
-        }
-        
-        .notification-btn:hover {
-            background: #ff9933;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(240, 136, 62, 0.4);
-        }
-        
-        /* Анимации уведомлений */
-        @keyframes slide-up {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-5px); }
         }
         
         .blink {
@@ -616,153 +513,163 @@
     </style>
 </head>
 <body>
-    <!-- Уведомление о событии -->
-    <div class="notification-overlay" id="eventNotification">
-        <div class="notification-card">
-            <div class="notification-header">
-                <div class="notification-icon">🚀</div>
-                <div class="notification-title">НОВОЕ СОБЫТИЕ</div>
+    <div class="main-container">
+        <!-- ЛЕВАЯ КОЛОНКА: Основной контент -->
+        <div class="left-column">
+            <!-- Шапка -->
+            <div class="header-block">
+                <h1 class="main-title">🎮 ИГРА ПО-КРУПНОМУ</h1>
+                <p class="subtitle">Циклический планировщик • Настроил один раз — работает автоматически</p>
             </div>
             
-            <div class="notification-content">
-                <div class="notification-task">
-                    <div class="task-text">Строительство активировано!</div>
-                    <div class="task-status">⏳ 00:44:53</div>
-                </div>
-                
-                <div class="notification-task">
-                    <div class="task-text">Увеличьте силу на 1 с помощью строительства</div>
-                    <div class="task-status">x3 ✅</div>
-                </div>
-                
-                <div class="notification-task">
-                    <div class="task-text">Ускорьте строительство на 1 мин</div>
-                    <div class="task-status">x42 ✅</div>
-                </div>
-                
-                <div class="notification-task">
-                    <div class="task-text">Получайте алмазы x1, покупая наборы</div>
-                    <div class="task-status">x60 ✅</div>
-                </div>
-            </div>
-            
-            <div class="notification-timer">
-                ⏰ Осталось времени: <span id="notificationTimer">00:44:53</span>
-            </div>
-            
-            <button class="notification-btn" onclick="closeNotification()">
-                ПОНЯТНО, ПРОДОЛЖАЕМ ИГРАТЬ
-            </button>
-        </div>
-    </div>
-    
-    <div class="center-container">
-        <!-- Шапка -->
-        <div class="header-block">
-            <h1 class="main-title">🎮 ИГРА ПО-КРУПНОМУ</h1>
-            <p class="subtitle">Циклический планировщик • Настроил один раз — работает автоматически</p>
-        </div>
-        
-        <!-- Таймер с шестеренкой -->
-        <div class="timer-block">
-            <div class="timer-header">
-                <div class="cycle-info">
-                    <div class="cycle-day">День цикла:</div>
-                    <div class="cycle-value" id="currentCycleDay">1</div>
-                </div>
-                <div class="settings-gear" onclick="toggleSettings()">⚙️</div>
-            </div>
-            
-            <div class="current-time" id="realTime">--:--:--</div>
-            <div class="current-date">
-                <span id="currentDate">--.--.----</span> • 
-                <span id="dayOfWeek">----</span>
-            </div>
-            
-            <div class="settings-panel" id="settingsPanel">
-                <input type="number" id="startDay" class="settings-input" min="1" max="7" value="1" placeholder="День цикла (1-7)">
-                <button class="settings-btn" onclick="applySettings()">💾 Применить</button>
-            </div>
-        </div>
-        
-        <!-- События -->
-        <div class="events-row">
-            <div class="event-card current-card">
-                <div class="event-title">
-                    <span class="blink" style="color: var(--accent-green);">🟢 ИДЕТ СЕЙЧАС</span>
-                </div>
-                <div class="event-name" id="currentEventName">Загрузка...</div>
-                <div class="event-time">
-                    <div class="time-label">
-                        🕐 До <span style="color: var(--text-primary); font-weight: 500;" id="timeUntil">--:--</span>
+            <!-- Таймер -->
+            <div class="timer-block">
+                <div class="timer-header">
+                    <div class="cycle-info">
+                        <div class="cycle-day">День цикла:</div>
+                        <div class="cycle-value" id="currentCycleDay">1</div>
                     </div>
-                    <div class="time-value" id="countdownTimer">--:--:--</div>
-                </div>
-            </div>
-            
-            <div class="event-card next-card">
-                <div class="event-title" style="color: var(--accent-blue);">
-                    <span style="font-size: 1.1rem;">🔜</span> СЛЕДУЮЩЕЕ
-                </div>
-                <div class="event-name" id="nextEventName">Загрузка...</div>
-                <div class="event-time">
-                    <div class="time-label">🕐 Начинается в</div>
-                    <div class="time-value" id="nextEventTime">--:--</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- ОБНОВЛЕННОЕ РАСПИСАНИЕ -->
-        <div class="schedule-block">
-            <div class="block-title">📅 РАСПИСАНИЕ НА СЕГОДНЯ</div>
-            
-            <table class="schedule-table">
-                <thead>
-                    <tr>
-                        <th style="width: 30%;">Время</th>
-                        <th>Событие</th>
-                    </tr>
-                </thead>
-                <tbody id="scheduleBody">
-                    <!-- Заполнится через JS -->
-                </tbody>
-            </table>
-        </div>
-        
-        <!-- Слайдер -->
-        <div class="slider-block">
-            <div class="block-title">🖼️ ГАЛЕРЕЯ</div>
-            
-            <div class="slider-container">
-                <div class="slider-image" id="sliderImage">
-                    📷 Место для фотографии
+                    <div class="settings-gear" onclick="toggleSettings()">⚙️</div>
                 </div>
                 
-                <div class="slider-nav">
-                    <div class="slider-arrow" onclick="prevSlide()">◀</div>
-                    <div class="slider-counter">
-                        <span id="currentSlide">1</span> / <span id="totalSlides">5</span>
+                <div class="current-time" id="realTime">--:--:--</div>
+                <div class="current-date">
+                    <span id="currentDate">--.--.----</span> • 
+                    <span id="dayOfWeek">----</span>
+                </div>
+                
+                <div class="settings-panel" id="settingsPanel">
+                    <input type="number" id="startDay" class="settings-input" min="1" max="7" value="1" placeholder="День цикла (1-7)">
+                    <button class="settings-btn" onclick="applySettings()">💾 Применить</button>
+                </div>
+            </div>
+            
+            <!-- БЛОКИ СОБЫТИЙ - вертикально -->
+            <div class="events-column">
+                <div class="event-card current-card">
+                    <div class="event-title">
+                        <span class="blink" style="color: var(--accent-green);">🟢 ИДЕТ СЕЙЧАС</span>
                     </div>
-                    <div class="slider-arrow" onclick="nextSlide()">▶</div>
+                    <div class="event-name" id="currentEventName">Загрузка...</div>
+                    <div class="event-time">
+                        <div class="time-label">
+                            🕐 До <span style="color: var(--text-primary); font-weight: 500;" id="timeUntil">--:--</span>
+                        </div>
+                        <div class="time-value" id="countdownTimer">--:--:--</div>
+                    </div>
+                </div>
+                
+                <div class="event-card next-card">
+                    <div class="event-title" style="color: var(--accent-blue);">
+                        <span class="tasks-icon">🔜</span> СЛЕДУЮЩЕЕ
+                    </div>
+                    <div class="event-name" id="nextEventName">Загрузка...</div>
+                    <div class="event-time">
+                        <div class="time-label">🕐 Начинается в</div>
+                        <div class="time-value" id="nextEventTime">--:--</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Расписание -->
+            <div class="schedule-block">
+                <div class="block-title">📅 РАСПИСАНИЕ НА СЕГОДНЯ</div>
+                
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Время</th>
+                            <th>Событие</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleBody">
+                        <!-- Заполнится через JS -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Слайдер -->
+            <div class="slider-block">
+                <div class="block-title">🖼️ ГАЛЕРЕЯ</div>
+                
+                <div class="slider-container">
+                    <div class="slider-image" id="sliderImage">
+                        📷 Место для фотографии
+                    </div>
+                    
+                    <div class="slider-nav">
+                        <div class="slider-arrow" onclick="prevSlide()">◀</div>
+                        <div class="slider-counter">
+                            <span id="currentSlide">1</span> / <span id="totalSlides">5</span>
+                        </div>
+                        <div class="slider-arrow" onclick="nextSlide()">▶</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Оплата -->
+            <div class="payment-simple">
+                <div class="payment-title">
+                    💳 ПОДДЕРЖАТЬ ПРОЕКТ
+                </div>
+                
+                <div class="payment-amount">на печенье</div>
+                
+                <div class="phone-number" onclick="copyPhoneNumber()">
+                    +7 (968) 974-72-00
+                </div>
+                
+                <div class="payment-note">
+                    Просто отправьте любую сумму на этот номер<br>
+                    Спасибо за поддержку! 🍪
                 </div>
             </div>
         </div>
         
-        <!-- Простой блок оплаты -->
-        <div class="payment-simple">
-            <div class="payment-title">
-                💳 ПОДДЕРЖАТЬ ПРОЕКТ
-            </div>
-            
-            <div class="payment-amount">на печенье</div>
-            
-            <div class="phone-number" onclick="copyPhoneNumber()">
-                +7 (968) 974-72-00
-            </div>
-            
-            <div class="payment-note">
-                Просто отправьте любую сумму на этот номер<br>
-                Спасибо за поддержку! 🍪
+        <!-- ПРАВАЯ КОЛОНКА: Окно заданий -->
+        <div class="right-column">
+            <div class="tasks-window">
+                <div class="tasks-header">
+                    <div class="tasks-icon">🎯</div>
+                    <div class="tasks-title">ВЫПОЛНЯЙТЕ ЗАДАНИЯ</div>
+                </div>
+                
+                <div class="tasks-timer">
+                    <div class="timer-label">Осталось времени</div>
+                    <div class="timer-display" id="tasksTimer">00:44:53</div>
+                    <div class="timer-label">Получите очки за выполнение</div>
+                </div>
+                
+                <div class="tasks-list">
+                    <div class="task-item">
+                        <div class="task-text">Увеличьте силу на 1 с помощью строительства</div>
+                        <div class="task-counter">x3 ✅</div>
+                    </div>
+                    
+                    <div class="task-item">
+                        <div class="task-text">Ускорьте строительство на 1 мин</div>
+                        <div class="task-counter">x42 ✅</div>
+                    </div>
+                    
+                    <div class="task-item">
+                        <div class="task-text">Получайте алмазы x1, покупая наборы</div>
+                        <div class="task-counter">x60 ✅</div>
+                    </div>
+                </div>
+                
+                <div class="tasks-progress">
+                    <div class="progress-text">
+                        <span>Прогресс выполнения</span>
+                        <span>105/150 очков</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>Текущее событие: <span id="currentTaskEvent">Строительство</span></span>
+                        <span>70%</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -786,6 +693,10 @@
             lastAppliedDate: null
         };
         
+        // Таймер заданий
+        let tasksTimeLeft = 44 * 60 + 53; // 44:53
+        let tasksTimerInterval = null;
+        
         // Слайдер
         let currentSlide = 1;
         const totalSlides = 5;
@@ -797,23 +708,16 @@
             "📷 Фото 5: Достижения"
         ];
         
-        // Для уведомлений
-        let lastEventIndex = -1;
-        let notificationTimer = null;
-        
         // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
             loadSettings();
             updateDateTime();
             setInterval(updateDateTime, 1000);
             updateSlider();
+            startTasksTimer();
             
             document.getElementById('totalSlides').textContent = totalSlides;
-            
-            // Тест уведомления (можно удалить после теста)
-            setTimeout(() => {
-                // showEventNotification("Строительство");
-            }, 3000);
+            document.getElementById('currentTaskEvent').textContent = "Строительство";
         });
         
         function loadSettings() {
@@ -920,12 +824,8 @@
             const currentEvent = daySchedule[currentSlotIndex];
             const nextEvent = daySchedule[nextSlotIndex];
             
-            // Проверка смены события (для уведомлений)
-            if (currentSlotIndex !== lastEventIndex) {
-                lastEventIndex = currentSlotIndex;
-                // Показываем уведомление о новом событии
-                showEventNotification(currentEvent);
-            }
+            // Обновляем текущее событие в окне заданий
+            document.getElementById('currentTaskEvent').textContent = currentEvent;
             
             // Время до следующего события
             let nextTime = new Date();
@@ -951,7 +851,7 @@
             document.getElementById('countdownTimer').textContent = 
                 `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
             
-            // Обновляем таблицу с красивым выделением
+            // Обновляем таблицу расписания
             updateScheduleTable(daySchedule, currentSlotIndex, nextSlotIndex);
         }
         
@@ -989,70 +889,28 @@
             }
         }
         
-        // Уведомление о событии
-        function showEventNotification(eventType) {
-            const notification = document.getElementById('eventNotification');
-            const timerElement = document.getElementById('notificationTimer');
-            
-            // Устанавливаем текст в зависимости от типа события
-            let notificationTitle = "🚀 НОВОЕ СОБЫТИЕ";
-            let notificationText = "";
-            
-            switch(eventType) {
-                case "Строительство":
-                    notificationText = "Строительство активировано!";
-                    break;
-                case "Улучшение войск":
-                    notificationText = "Время улучшать войска!";
-                    break;
-                case "Исследования":
-                    notificationText = "Начался период исследований!";
-                    break;
-                case "Снаряжение":
-                    notificationText = "Пора экипировать героя!";
-                    break;
-                case "Улучшение героя":
-                    notificationText = "Время улучшить героя!";
-                    break;
-                default:
-                    notificationText = "Началось новое событие!";
+        // Таймер заданий
+        function startTasksTimer() {
+            if (tasksTimerInterval) {
+                clearInterval(tasksTimerInterval);
             }
             
-            // Обновляем заголовок
-            document.querySelector('.notification-title').textContent = notificationTitle;
-            document.querySelector('.notification-task .task-text').textContent = notificationText;
-            
-            // Сбрасываем таймер уведомления
-            let timeLeft = 44 * 60 + 53; // 44 минуты 53 секунды
-            if (notificationTimer) {
-                clearInterval(notificationTimer);
-            }
-            
-            notificationTimer = setInterval(() => {
-                timeLeft--;
-                if (timeLeft < 0) {
-                    clearInterval(notificationTimer);
-                    closeNotification();
-                    return;
-                }
-                
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }, 1000);
-            
-            // Показываем уведомление
-            notification.style.display = 'flex';
+            updateTasksTimer();
+            tasksTimerInterval = setInterval(updateTasksTimer, 1000);
         }
         
-        function closeNotification() {
-            const notification = document.getElementById('eventNotification');
-            notification.style.display = 'none';
-            
-            if (notificationTimer) {
-                clearInterval(notificationTimer);
-                notificationTimer = null;
+        function updateTasksTimer() {
+            tasksTimeLeft--;
+            if (tasksTimeLeft < 0) {
+                tasksTimeLeft = 44 * 60 + 53; // Сброс
             }
+            
+            const hours = Math.floor(tasksTimeLeft / 3600);
+            const minutes = Math.floor((tasksTimeLeft % 3600) / 60);
+            const seconds = tasksTimeLeft % 60;
+            
+            document.getElementById('tasksTimer').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
         
         // Слайдер
