@@ -4,50 +4,1031 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Игра по-крупному | Планировщик</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="modules/event-styles.css">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <style>
+        :root {
+            --primary-dark: #0d1117;
+            --secondary-dark: #161b22;
+            --card-bg: #21262d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --accent-green: #238636;
+            --accent-blue: #1f6feb;
+            --accent-purple: #8957e5;
+            --border-color: #30363d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--primary-dark);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        /* Центрированный контейнер */
+        .center-container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        /* Блоки - все одинаковые */
+        .center-block {
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        /* Шапка */
+        .header-block {
+            border: none;
+            background: none;
+            padding: 10px 0 30px 0;
+        }
+        
+        .main-title {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Время и дата */
+        .time-block {
+            padding: 35px 30px;
+        }
+        
+        .current-time {
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .current-date {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        
+        .cycle-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-purple), #6e40c9);
+            padding: 10px 30px;
+            border-radius: 25px;
+            font-weight: 500;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        /* События - в строку по центру */
+        .events-row {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .events-row {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        .event-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .current-card {
+            border-top: 5px solid var(--accent-green);
+        }
+        
+        .next-card {
+            border-top: 5px solid var(--accent-blue);
+        }
+        
+        .event-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .event-title {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .event-name {
+            font-size: 1.9rem;
+            font-weight: 600;
+            margin: 15px 0;
+            color: var(--text-primary);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .event-timer {
+            background: var(--secondary-dark);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .timer-label {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .timer-value {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .blink {
+            animation: blink 1.5s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Расписание */
+        .schedule-block {
+            text-align: center;
+        }
+        
+        .block-title {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        
+        .schedule-table th {
+            padding: 15px 0;
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .schedule-table td {
+            padding: 18px 0;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .time-cell {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+        }
+        
+        .event-cell {
+            position: relative;
+        }
+        
+        .event-type {
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .type-hero { background: rgba(255, 209, 102, 0.2); color: #ffd166; border: 1px solid rgba(255, 209, 102, 0.3); }
+        .type-settlement { background: rgba(123, 91, 166, 0.2); color: #9d7bd6; border: 1px solid rgba(123, 91, 166, 0.3); }
+        .type-troops { background: rgba(233, 69, 96, 0.2); color: #ff6b9d; border: 1px solid rgba(233, 69, 96, 0.3); }
+        
+        .legend {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+        
+        /* Герои */
+        .heroes-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .heroes-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .hero-card {
+            background: var(--secondary-dark);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .hero-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .hero-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .hero-level {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        /* Оплата */
+        .payment-form {
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            background: var(--secondary-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
+        }
+        
+        .payment-info {
+            background: rgba(35, 134, 54, 0.1);
+            border: 1px solid rgba(35, 134, 54, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .payment-label {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .payment-phone {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .payment-amount {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            margin: 15px 0;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+        
+        .submit-btn:hover {
+            background: #2ea043;
+        }
+        
+        .submit-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+        }
+        
+        .success-message {
+            background: rgba(35, 134, 54, 0.1);
+            border: 1px solid rgba(35, 134, 54, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            color: var(--accent-green);
+            font-weight: 500;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        /* Настройки */
+        .settings-btn {
+            background: var(--secondary-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .settings-btn:hover {
+            background: var(--border-color);
+            transform: translateY(-2px);
+        }
+        
+        .settings-panel {
+            background: var(--secondary-dark);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+            border: 1px solid var(--border-color);
+            display: none;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        /* Благодарность */
+        .thanks-block {
+            background: none;
+            border: none;
+            padding: 20px 0;
+        }
+        
+        .thanks-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .developer {
+            color: var(--accent-blue);
+            font-weight: 500;
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        
+        .footer-note {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+            margin-top: 15px;
+        }
+        
+        /* Анимации */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
 </head>
 <body>
-    <div class="page-wrapper">
+    <div class="center-container">
         <!-- Шапка -->
-        <div class="page-header" id="pageHeader">
-            <!-- Загрузится через JS -->
+        <div class="center-block header-block">
+            <h1 class="main-title">🎮 ИГРА ПО-КРУПНОМУ</h1>
+            <p class="subtitle">Циклический планировщик • Настроил один раз — работает автоматически</p>
         </div>
         
-        <!-- Основной контент - центрированный -->
-        <div class="centered-container">
-            <!-- Верхний ряд: время и дата -->
-            <div class="top-row" id="topRow">
-                <!-- Загрузится через JS -->
+        <!-- Время и дата -->
+        <div class="center-block time-block">
+            <div class="current-time" id="realTime">--:--:--</div>
+            <div class="current-date">
+                <span id="currentDate">--.--.----</span> • 
+                <span id="dayOfWeek">----</span>
+            </div>
+            <div class="cycle-badge">
+                День цикла: <span id="currentCycleDay">1</span>
+            </div>
+        </div>
+        
+        <!-- События в строку -->
+        <div class="events-row">
+            <div class="event-card current-card">
+                <div class="event-icon">🟢</div>
+                <div class="event-title">
+                    <span class="blink" style="color: var(--accent-green);">ОСТАЛОСЬ СЕЙЧАС</span>
+                </div>
+                <div class="event-name" id="currentEventName">Загрузка...</div>
+                <div class="event-timer">
+                    <div class="timer-label">
+                        🕐 До <span style="color: var(--text-primary); font-weight: 500;" id="timeUntil">--:--</span>
+                    </div>
+                    <div class="timer-value" id="countdownTimer">--:--:--</div>
+                </div>
             </div>
             
-            <!-- Средний ряд: события -->
-            <div class="middle-row" id="middleRow">
-                <!-- Загрузится через JS -->
+            <div class="event-card next-card">
+                <div class="event-icon">⏭️</div>
+                <div class="event-title" style="color: var(--accent-blue);">ДАЛЕЕ</div>
+                <div class="event-name" id="nextEventName">Загрузка...</div>
+                <div class="event-timer">
+                    <div class="timer-label">🕐 Начинается в</div>
+                    <div class="timer-value" id="nextEventTime">--:--</div>
+                </div>
             </div>
+        </div>
+        
+        <!-- Расписание -->
+        <div class="center-block schedule-block">
+            <div class="block-title">📅 РАСПИСАНИЕ НА СЕГОДНЯ</div>
             
-            <!-- Нижний ряд: расписание и галерея -->
-            <div class="bottom-section">
-                <!-- Левая часть: расписание -->
-                <div class="bottom-left" id="bottomLeft">
-                    <!-- Загрузится через JS -->
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Время</th>
+                        <th>Событие</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleBody">
+                    <!-- Заполнится через JS -->
+                </tbody>
+            </table>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ffd166;"></div>
+                    <span>Улучшение героя</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #9d7bd6;"></div>
+                    <span>Строительство поселения</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ff6b9d;"></div>
+                    <span>Улучшение войск</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Герои -->
+        <div class="center-block">
+            <div class="block-title">⭐ МОИ ГЕРОИ</div>
+            
+            <div class="heroes-grid">
+                <div class="hero-card">
+                    <div class="hero-icon">⚔️</div>
+                    <div class="hero-name">Легионер</div>
+                    <div class="hero-level">Уровень 45</div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-value">1200</span>
+                            <span class="stat-label">Сила</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">850</span>
+                            <span class="stat-label">Здоровье</span>
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- Правая часть: галерея и оплата -->
-                <div class="bottom-right" id="bottomRight">
-                    <!-- Загрузится через JS -->
+                <div class="hero-card">
+                    <div class="hero-icon">🔥</div>
+                    <div class="hero-name">Маг Огня</div>
+                    <div class="hero-level">Уровень 38</div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-value">1500</span>
+                            <span class="stat-label">Сила</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">480</span>
+                            <span class="stat-label">Здоровье</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-card">
+                    <div class="hero-icon">🏹</div>
+                    <div class="hero-name">Лесной Лучник</div>
+                    <div class="hero-level">Уровень 42</div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-value">980</span>
+                            <span class="stat-label">Сила</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">620</span>
+                            <span class="stat-label">Здоровье</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-card">
+                    <div class="hero-icon">✨</div>
+                    <div class="hero-name">Жрец Света</div>
+                    <div class="hero-level">Уровень 35</div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-value">750</span>
+                            <span class="stat-label">Сила</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">920</span>
+                            <span class="stat-label">Здоровье</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- Оплата -->
+        <div class="center-block">
+            <div class="block-title">💳 ПОДДЕРЖАТЬ ПРОЕКТ</div>
             
-            <!-- Настройки внизу -->
-            <div class="settings-row" id="settingsRow">
-                <!-- Загрузится через JS -->
+            <form class="payment-form" id="paymentForm">
+                <div class="form-group">
+                    <label class="form-label">Номер телефона:</label>
+                    <input type="tel" class="form-input" placeholder="+7 (900) 123-45-67" required 
+                           pattern="\+7\s?[\(]?\d{3}[\)]?\s?\d{3}[\-]?\d{2}[\-]?\d{2}"
+                           title="Формат: +7 (900) 123-45-67">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Сумма перевода:</label>
+                    <input type="number" class="form-input" value="200" min="50" max="5000" required>
+                </div>
+                
+                <div class="payment-info">
+                    <div class="payment-label">Переведите на номер:</div>
+                    <div class="payment-phone" id="myPhoneNumber">+7 (900) 123-45-67</div>
+                    <div class="payment-label">Сумма:</div>
+                    <div class="payment-amount" id="paymentAmount">200 ₽</div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    ✅ ПОДТВЕРДИТЬ ПЕРЕВОД
+                </button>
+                
+                <div class="success-message" id="successMessage">
+                    ✅ Спасибо! Информация о переводе сохранена
+                </div>
+            </form>
+            
+            <div class="thanks-block">
+                <div class="thanks-text">Спасибо за работу!</div>
+                <div class="developer">Разработчик: Alex GameMaster</div>
+                <div class="footer-note">Все средства идут на развитие проекта</div>
+            </div>
+        </div>
+        
+        <!-- Настройки -->
+        <div class="center-block">
+            <button class="settings-btn" onclick="toggleSettings()">
+                ⚙️ Настройки планировщика
+            </button>
+            
+            <div class="settings-panel" id="settingsPanel">
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 10px; color: var(--text-primary); text-align: center; font-size: 1.1rem;">
+                        📅 Стартовый день цикла (1-7):
+                    </label>
+                    <input type="number" id="startDay" class="form-input" min="1" max="7" value="1">
+                </div>
+                
+                <button class="submit-btn" onclick="applySettings()">
+                    💾 Применить настройки
+                </button>
             </div>
         </div>
     </div>
-    
-    <script src="modules/event-loader-v2.js"></script>
-    <script src="modules/event-logic.js"></script>
+
+    <script>
+        // Логика планировщика
+        
+        const scheduleCycle = [
+            ["Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя"],
+            ["Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения"],
+            ["Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения", "Улучшение войск"],
+            ["Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий"],
+            ["Усиление снаряжения", "Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения"],
+            ["Улучшение героя", "Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя"],
+            ["Строительство поселения", "Улучшение войск", "Исследование технологий", "Усиление снаряжения", "Улучшение героя", "Строительство поселения"]
+        ];
+        
+        const timeSlots = ["03:00", "07:00", "11:00", "15:00", "19:00", "23:00"];
+        
+        let settings = {
+            startDay: 1,
+            lastAppliedDate: null,
+            myPhoneNumber: "+7 (900) 123-45-67"
+        };
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            setupEventListeners();
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            document.getElementById('myPhoneNumber').textContent = settings.myPhoneNumber;
+            
+            const amountInput = document.querySelector('input[type="number"]');
+            if (amountInput) {
+                amountInput.addEventListener('input', function() {
+                    document.getElementById('paymentAmount').textContent = this.value + ' ₽';
+                });
+            }
+        });
+        
+        function loadSettings() {
+            const saved = localStorage.getItem('gameSchedulerSettings');
+            if (saved) {
+                const data = JSON.parse(saved);
+                settings.startDay = data.startDay || 1;
+                settings.lastAppliedDate = data.lastAppliedDate || null;
+                
+                const startDayInput = document.getElementById('startDay');
+                if (startDayInput) {
+                    startDayInput.value = settings.startDay;
+                }
+            }
+        }
+        
+        function setupEventListeners() {
+            const paymentForm = document.getElementById('paymentForm');
+            if (paymentForm) {
+                paymentForm.addEventListener('submit', processPayment);
+            }
+        }
+        
+        function toggleSettings() {
+            const panel = document.getElementById('settingsPanel');
+            if (panel) {
+                panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+        
+        function applySettings() {
+            const startDayInput = document.getElementById('startDay');
+            if (!startDayInput) return;
+            
+            const startDay = parseInt(startDayInput.value);
+            if (startDay < 1 || startDay > 7) {
+                alert('Введите число от 1 до 7');
+                return;
+            }
+            
+            settings.startDay = startDay;
+            settings.lastAppliedDate = new Date().toDateString();
+            
+            localStorage.setItem('gameSchedulerSettings', JSON.stringify(settings));
+            
+            const panel = document.getElementById('settingsPanel');
+            if (panel) {
+                panel.style.display = 'none';
+            }
+            
+            updateDateTime();
+            showNotification('Настройки сохранены!');
+        }
+        
+        function calculateCurrentCycleDay() {
+            if (settings.lastAppliedDate) {
+                const startDate = new Date(settings.lastAppliedDate);
+                const currentDate = new Date();
+                const diffDays = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
+                return ((settings.startDay - 1 + diffDays) % 7) + 1;
+            }
+            return settings.startDay;
+        }
+        
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Время и дата
+            const timeStr = now.toLocaleTimeString('ru-RU', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            
+            const dateStr = now.toLocaleDateString('ru-RU', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+            
+            const dayOfWeek = now.toLocaleDateString('ru-RU', { weekday: 'long' });
+            const dayOfWeekCapitalized = dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1);
+            
+            // Обновляем элементы
+            document.getElementById('realTime').textContent = timeStr;
+            document.getElementById('currentDate').textContent = dateStr;
+            document.getElementById('dayOfWeek').textContent = dayOfWeekCapitalized;
+            
+            // День цикла
+            const currentCycleDay = calculateCurrentCycleDay();
+            document.getElementById('currentCycleDay').textContent = currentCycleDay;
+            
+            // Расписание
+            const daySchedule = scheduleCycle[currentCycleDay - 1];
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            
+            let nextSlotIndex = -1;
+            for (let i = 0; i < timeSlots.length; i++) {
+                const slotHour = parseInt(timeSlots[i].split(':')[0]);
+                if (currentHour < slotHour || (currentHour === slotHour && currentMinute < 0)) {
+                    nextSlotIndex = i;
+                    break;
+                } else if (i === timeSlots.length - 1) {
+                    nextSlotIndex = 0;
+                }
+            }
+            
+            const currentSlotIndex = (nextSlotIndex - 1 + timeSlots.length) % timeSlots.length;
+            const currentEvent = daySchedule[currentSlotIndex];
+            const nextEvent = daySchedule[nextSlotIndex];
+            
+            // Время до следующего события
+            let nextTime = new Date();
+            nextTime.setHours(parseInt(timeSlots[nextSlotIndex].split(':')[0]));
+            nextTime.setMinutes(0);
+            nextTime.setSeconds(0);
+            
+            if (nextSlotIndex === 0 && currentSlotIndex === timeSlots.length - 1) {
+                nextTime.setDate(nextTime.getDate() + 1);
+            }
+            
+            const timeDiff = nextTime - now;
+            const hoursLeft = Math.floor(timeDiff / (1000 * 60 * 60));
+            const minutesLeft = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsLeft = Math.floor((timeDiff % (1000 * 60)) / 1000);
+            
+            // Обновляем информацию
+            document.getElementById('currentEventName').textContent = currentEvent;
+            document.getElementById('nextEventName').textContent = nextEvent;
+            document.getElementById('nextEventTime').textContent = timeSlots[nextSlotIndex];
+            document.getElementById('timeUntil').textContent = timeSlots[nextSlotIndex];
+            
+            document.getElementById('countdownTimer').textContent = 
+                `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
+            
+            // Обновляем таблицу
+            updateScheduleTable(daySchedule, currentSlotIndex, nextSlotIndex);
+        }
+        
+        function updateScheduleTable(daySchedule, currentSlotIndex, nextSlotIndex) {
+            const scheduleBody = document.getElementById('scheduleBody');
+            if (!scheduleBody) return;
+            
+            scheduleBody.innerHTML = '';
+            
+            for (let i = 0; i < timeSlots.length; i++) {
+                const row = document.createElement('tr');
+                
+                // Время
+                const timeCell = document.createElement('td');
+                timeCell.className = 'time-cell';
+                timeCell.textContent = timeSlots[i];
+                row.appendChild(timeCell);
+                
+                // Событие
+                const eventCell = document.createElement('td');
+                eventCell.className = 'event-cell';
+                
+                const eventType = daySchedule[i];
+                const eventSpan = document.createElement('span');
+                eventSpan.className = `event-type ${getEventClass(eventType)}`;
+                
+                if (i === currentSlotIndex) {
+                    eventSpan.classList.add('pulse');
+                    eventSpan.style.borderColor = 'var(--accent-green)';
+                } else if (i === nextSlotIndex) {
+                    eventSpan.style.borderColor = 'var(--accent-blue)';
+                }
+                
+                eventSpan.textContent = eventType;
+                eventCell.appendChild(eventSpan);
+                
+                row.appendChild(eventCell);
+                scheduleBody.appendChild(row);
+            }
+        }
+        
+        function getEventClass(eventType) {
+            const classes = {
+                "Улучшение героя": "type-hero",
+                "Строительство поселения": "type-settlement", 
+                "Улучшение войск": "type-troops",
+                "Исследование технологий": "type-tech",
+                "Усиление снаряжения": "type-equipment"
+            };
+            return classes[eventType] || '';
+        }
+        
+        function processPayment(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            
+            if (!submitBtn || !successMessage) return;
+            
+            // Блокируем кнопку
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Обработка...';
+            
+            setTimeout(() => {
+                // Сохраняем данные
+                const paymentData = {
+                    date: new Date().toISOString(),
+                    amount: form.querySelector('input[type="number"]').value,
+                    recipientPhone: settings.myPhoneNumber
+                };
+                
+                let payments = JSON.parse(localStorage.getItem('payments') || '[]');
+                payments.push(paymentData);
+                localStorage.setItem('payments', JSON.stringify(payments));
+                
+                // Показываем успешное сообщение
+                successMessage.style.display = 'block';
+                submitBtn.style.display = 'none';
+                
+                // Сбрасываем форму через 3 секунды
+                setTimeout(() => {
+                    form.reset();
+                    document.getElementById('paymentAmount').textContent = '200 ₽';
+                    successMessage.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '✅ ПОДТВЕРДИТЬ ПЕРЕВОД';
+                }, 3000);
+                
+                showNotification('Спасибо! Информация о переводе сохранена.');
+            }, 1500);
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--accent-green);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-weight: 500;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+                font-size: 1.1rem;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+            
+            // Добавляем стили для анимации
+            if (!document.getElementById('notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+    </script>
 </body>
 </html>
